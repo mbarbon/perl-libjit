@@ -14,6 +14,16 @@ our $LIBJIT_M4 = 'm4';
 our $LIBJIT_INCLUDE = File::Spec->catfile($LIBJIT_HOME, 'include');
 our $LIBJIT_RESULT = File::Spec->catfile($LIBJIT_HOME, 'jit', '.libs', 'libjit'.$Config::Config{lib_ext});
 
+sub new {
+    my ($class, @args) = @_;
+
+    return $class->SUPER::new(
+        include_dirs       => [$LIBJIT_INCLUDE],
+        extra_linker_flags => [$LIBJIT_RESULT, '-lpthread'],
+        @args,
+    );
+}
+
 sub ACTION_code {
     my ($self) = @_;
 

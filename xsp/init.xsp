@@ -1,0 +1,7 @@
+{%
+
+BOOT:
+    lj_define_constants(aTHX);
+    lj_define_types(aTHX);
+
+%}

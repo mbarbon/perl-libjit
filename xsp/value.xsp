@@ -1,0 +1,7 @@
+%module{LibJIT};
+
+%package{LibJIT::API};
+
+#include "helpers.h"
+
+LibJIT::Value jit_value_get_param(LibJIT::Function function, unsigned int param);

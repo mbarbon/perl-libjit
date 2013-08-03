@@ -1,0 +1,20 @@
+%module{LibJIT};
+
+%package{LibJIT::API};
+
+#include "helpers.h"
+
+LibJIT::Function jit_function_create(LibJIT::Context context, LibJIT::Type signature);
+
+int jit_function_compile(LibJIT::Function function);
+
+%{
+
+void
+jit_function_apply(LibJIT::Function function, ...)
+  PPCODE:
+    PUTBACK;
+    int count = lj_function_apply(aTHX_ function, &ST(1), items - 1);
+    SPAGAIN;
+
+%}

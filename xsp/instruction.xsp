@@ -1,0 +1,11 @@
+%module{LibJIT};
+
+%package{LibJIT::API};
+
+#include "helpers.h"
+
+LibJIT::Value jit_insn_add(LibJIT::Function function, LibJIT::Value value1, LibJIT::Value value2);
+
+LibJIT::Value jit_insn_mul(LibJIT::Function function, LibJIT::Value value1, LibJIT::Value value2);
+
+int jit_insn_return(LibJIT::Function function, LibJIT::Value value);

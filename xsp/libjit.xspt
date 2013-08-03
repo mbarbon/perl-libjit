@@ -1,0 +1,15 @@
+%loadplugin{feature::default_xs_typemap};
+
+%typemap{jit_abi_t}{simple}{
+    %xs_type{T_ENUM};
+};
+
+%typemap{std::vector<jit_type_t>}{simple}{
+    %xs_type{T_VECTOR_TYPE};
+    %xs_input_code{% $var = lj_convert_avref_to_type_array(aTHX_ $arg); %};
+};
+
+%typemap{LibJIT::Context}{object};
+%typemap{LibJIT::Function}{object};
+%typemap{LibJIT::Type}{object};
+%typemap{LibJIT::Value}{object};

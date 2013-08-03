@@ -9,3 +9,5 @@
 /blib
 /buildtmp
 /pod2htm?.tmp
+*.o
+*.obj

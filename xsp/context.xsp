@@ -1,0 +1,11 @@
+%module{LibJIT};
+
+%package{LibJIT::API};
+
+#include "helpers.h"
+
+LibJIT::Context jit_context_create();
+void jit_context_destroy(LibJIT::Context context);
+
+void jit_context_build_start(LibJIT::Context context);
+void jit_context_build_end(LibJIT::Context context);
