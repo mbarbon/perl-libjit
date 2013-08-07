@@ -4,8 +4,8 @@
 #include "jitapi.h"
 
 #ifdef PERL_IMPLICIT_CONTEXT
-#define jit_tTHX_ jit_void_ptr,
-#define jit_tTHX  jit_void_ptr
+#define jit_tTHX_ jit_type_void_ptr,
+#define jit_tTHX  jit_type_void_ptr
 #define jit_aTHX_ thx,
 #define jit_aTHX  thx
 #else
