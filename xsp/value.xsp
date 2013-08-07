@@ -4,4 +4,10 @@
 
 #include "helpers.h"
 
+LibJIT::Value jit_value_create(LibJIT::Function function, LibJIT::Type type);
+
+LibJIT::Value jit_value_create_nint_constant(LibJIT::Function function, LibJIT::Type type, jit_nint const_value);
+
+LibJIT::Value jit_value_create_float64_constant(LibJIT::Function function, LibJIT::Type type, jit_float64 const_value);
+
 LibJIT::Value jit_value_get_param(LibJIT::Function function, unsigned int param);

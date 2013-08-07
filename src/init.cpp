@@ -36,6 +36,9 @@ void lj_define_type(pTHX_ jit_type_t type, const char *name)
 void lj_define_types(pTHX)
 {
     DEFINE_TYPE(int);
+    DEFINE_TYPE(nint);
+    DEFINE_TYPE(float64);
+    DEFINE_TYPE(void_ptr);
 }
 
 void lj_define_constants(pTHX)

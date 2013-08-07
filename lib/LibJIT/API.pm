@@ -15,14 +15,21 @@ my @Functions = qw(
 
     jit_function_create
     jit_function_compile
+    jit_function_to_closure
+    jit_function_set_optimization_level
     jit_function_apply
 
     jit_insn_add
+    jit_insn_dup
     jit_insn_mul
     jit_insn_return
+    jit_insn_store
 
     jit_type_create_signature
 
+    jit_value_create
+    jit_value_create_nint_constant
+    jit_value_create_float64_constant
     jit_value_get_param
 );
 
@@ -33,6 +40,9 @@ my @Constants = qw(
     jit_abi_fastcall
 
     jit_type_int
+    jit_type_nint
+    jit_type_float64
+    jit_type_void_ptr
 );
 
 our @EXPORT_OK = (@Functions, @Constants);

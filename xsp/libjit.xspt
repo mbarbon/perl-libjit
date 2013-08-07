@@ -1,7 +1,17 @@
 %loadplugin{feature::default_xs_typemap};
 
+%typemap{IV}{simple};
+
 %typemap{jit_abi_t}{simple}{
     %xs_type{T_ENUM};
+};
+
+%typemap{jit_nint}{simple}{
+    %xs_type{T_IV};
+};
+
+%typemap{jit_float64}{simple}{
+    %xs_type{T_NV};
 };
 
 %typemap{std::vector<jit_type_t>}{simple}{

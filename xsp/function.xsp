@@ -8,6 +8,11 @@ LibJIT::Function jit_function_create(LibJIT::Context context, LibJIT::Type signa
 
 int jit_function_compile(LibJIT::Function function);
 
+IV jit_function_to_closure(LibJIT::Function function)
+    %code{% RETVAL = (IV) jit_function_to_closure(function); %};
+
+void jit_function_set_optimization_level(LibJIT::Function function, unsigned int level);
+
 %{
 
 void

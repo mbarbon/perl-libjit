@@ -6,6 +6,10 @@
 
 LibJIT::Value jit_insn_add(LibJIT::Function function, LibJIT::Value value1, LibJIT::Value value2);
 
+LibJIT::Value jit_insn_dup(LibJIT::Function function, LibJIT::Value value2);
+
 LibJIT::Value jit_insn_mul(LibJIT::Function function, LibJIT::Value value1, LibJIT::Value value2);
 
 int jit_insn_return(LibJIT::Function function, LibJIT::Value value);
+
+void jit_insn_store(LibJIT::Function function, LibJIT::Value value1, LibJIT::Value value2);
