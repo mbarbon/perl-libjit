@@ -38,8 +38,9 @@ my $padix = jit_value_create_nint_constant($fun, jit_type_nint, $add->first->tar
 my $t1 = LibJIT::PerlAPI::pa_get_pad_sv($fun, $thx, $padix);
 my $tleft = LibJIT::PerlAPI::pa_sv_2nv($fun, $thx, $t1);
 
-# float const
-my $tright = jit_value_create_float64_constant($fun, jit_type_float64, ${$add->last->sv->object_2svref});
+# float const, in pad if threaded
+my $constsv = ${$add->last->sv} ? ${$add->last->sv} : $inc->PADLIST->ARRAYelt(1)->ARRAYelt($add->last->targ);
+my $tright = jit_value_create_float64_constant($fun, jit_type_float64, ${$constsv->object_2svref});
 
 # addition
 my $tres = jit_insn_add($fun, $tleft, $tright);
