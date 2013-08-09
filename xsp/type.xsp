@@ -4,5 +4,11 @@
 
 #include "helpers.h"
 
+LibJIT::Type jit_type_create_struct(std::vector<jit_type_t> fields, int incref)
+    %code{% RETVAL = jit_type_create_struct(&fields[0], fields.size(), incref); %};
+
+LibJIT::Type jit_type_create_union(std::vector<jit_type_t> fields, int incref)
+    %code{% RETVAL = jit_type_create_union(&fields[0], fields.size(), incref); %};
+
 LibJIT::Type jit_type_create_signature(jit_abi_t abi, LibJIT::Type type, std::vector<jit_type_t> types, int reference)
     %code{% RETVAL = jit_type_create_signature(abi, type, &types[0], types.size(), reference); %};

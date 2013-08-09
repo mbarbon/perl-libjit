@@ -8,27 +8,6 @@ void *lj_convert_sv_to_object(pTHX_ SV *sv, const char *name)
         croak("object is not a blessed scalar reference");
 }
 
-std::vector<jit_type_t> lj_convert_avref_to_type_array(pTHX_ SV *sv)
-{
-    if (!SvROK(sv) || SvTYPE(SvRV(sv)) != SVt_PVAV)
-        croak("value is not an array reference");
-
-    AV *av = (AV *)SvRV(sv);
-    std::vector<jit_type_t> res;
-    size_t size = av_len(av) + 1;
-
-    res.reserve(size);
-
-    for (int i = 0; i < size; ++i)
-    {
-        void *obj = lj_convert_sv_to_object(aTHX_ *av_fetch(av, i, 0), "LibJIT::Type");
-
-        res.push_back(static_cast<jit_type_t>(obj));
-    }
-
-    return res;
-}
-
 void lj_from_perl(pTHX_ jit_type_t type, SV *arg, void *buffer)
 {
     int kind = jit_type_get_kind(type);

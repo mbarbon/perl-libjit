@@ -10,16 +10,45 @@
     %xs_type{T_IV};
 };
 
+%typemap{jit_nuint}{simple}{
+    %xs_type{T_UV};
+};
+
+%typemap{jit_int}{simple}{
+    %xs_type{T_IV};
+};
+
+%typemap{jit_long}{simple}{
+    %xs_type{T_IV};
+};
+
+%typemap{jit_float32}{simple}{
+    %xs_type{T_NV};
+};
+
 %typemap{jit_float64}{simple}{
+    %xs_type{T_NV};
+};
+
+%typemap{jit_nfloat}{simple}{
     %xs_type{T_NV};
 };
 
 %typemap{std::vector<jit_type_t>}{simple}{
     %xs_type{T_VECTOR_TYPE};
-    %xs_input_code{% $var = lj_convert_avref_to_type_array(aTHX_ $arg); %};
+    %xs_input_code{% $var = lj_convert_avref_to_object_array<jit_type_t>(aTHX_ $arg); %};
 };
 
+%typemap{std::vector<jit_value_t>}{simple}{
+    %xs_type{T_VECTOR_VALUE};
+    %xs_input_code{% $var = lj_convert_avref_to_object_array<jit_value_t>(aTHX_ $arg); %};
+};
+
+%typemap{LibJIT::Block}{object};
+%typemap{LibJIT::Constant}{object};
 %typemap{LibJIT::Context}{object};
 %typemap{LibJIT::Function}{object};
+%typemap{LibJIT::Insn}{object};
+%typemap{LibJIT::Label}{object};
 %typemap{LibJIT::Type}{object};
 %typemap{LibJIT::Value}{object};
