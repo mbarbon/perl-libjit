@@ -4,34 +4,35 @@ use strict;
 use warnings;
 
 use LibJIT;
+use LibJIT::API_exports;
 
 use Exporter 'import';
 
-my @Functions = qw(
+our @AutoFunctions; # from API_exports
+
+my @Functions = (qw(
     jit_context_create
     jit_context_build_start
     jit_context_build_end
     jit_context_destroy
 
-    jit_function_create
-    jit_function_compile
     jit_function_to_closure
-    jit_function_set_optimization_level
     jit_function_apply
 
-    jit_insn_add
-    jit_insn_dup
-    jit_insn_mul
-    jit_insn_return
-    jit_insn_store
+    jit_insn_get_native
+    jit_insn_call
+    jit_insn_call_indirect
+    jit_insn_call_native
+    jit_insn_label
+    jit_insn_branch
+    jit_insn_branch_if
+    jit_insn_branch_if_not
+    jit_insn_address_of_label
 
+    jit_type_create_struct
+    jit_type_create_union
     jit_type_create_signature
-
-    jit_value_create
-    jit_value_create_nint_constant
-    jit_value_create_float64_constant
-    jit_value_get_param
-);
+), @AutoFunctions);
 
 my @Constants = qw(
     jit_abi_cdecl

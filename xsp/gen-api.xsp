@@ -7,6 +7,40 @@
 
 #include "helpers.h"
 
+LibJIT::Function jit_function_create(LibJIT::Context context, LibJIT::Type signature);
+LibJIT::Function jit_function_create_nested(LibJIT::Context context, LibJIT::Type signature, LibJIT::Function parent);
+void jit_function_abandon(LibJIT::Function func);
+LibJIT::Context jit_function_get_context(LibJIT::Function func);
+LibJIT::Type jit_function_get_signature(LibJIT::Function func);
+# ignoring jit_function_set_meta
+# ignoring jit_function_get_meta
+# ignoring jit_function_free_meta
+LibJIT::Function jit_function_next(LibJIT::Context context, LibJIT::Function prev);
+LibJIT::Function jit_function_previous(LibJIT::Context context, LibJIT::Function prev);
+LibJIT::Block jit_function_get_entry(LibJIT::Function func);
+LibJIT::Block jit_function_get_current(LibJIT::Function func);
+LibJIT::Function jit_function_get_nested_parent(LibJIT::Function func);
+int jit_function_compile(LibJIT::Function func);
+int jit_function_is_compiled(LibJIT::Function func);
+void jit_function_set_recompilable(LibJIT::Function func);
+void jit_function_clear_recompilable(LibJIT::Function func);
+int jit_function_is_recompilable(LibJIT::Function func);
+# ignoring jit_function_compile_entry
+# ignoring jit_function_setup_entry
+# ignoring jit_function_to_closure
+# ignoring jit_function_from_closure
+# ignoring jit_function_from_pc
+# ignoring jit_function_to_vtable_pointer
+# ignoring jit_function_from_vtable_pointer
+# ignoring jit_function_set_on_demand_compiler
+# ignoring jit_function_get_on_demand_compiler
+# ignoring jit_function_apply
+# ignoring jit_function_apply_vararg
+void jit_function_set_optimization_level(LibJIT::Function func, unsigned int level);
+unsigned int jit_function_get_optimization_level(LibJIT::Function func);
+unsigned int jit_function_get_max_optimization_level(void);
+LibJIT::Label jit_function_reserve_label(LibJIT::Function func);
+int jit_function_labels_equal(LibJIT::Function func, LibJIT::Label label, LibJIT::Label label2);
 int jit_insn_get_opcode(LibJIT::Insn insn);
 LibJIT::Value jit_insn_get_dest(LibJIT::Insn insn);
 LibJIT::Value jit_insn_get_value1(LibJIT::Insn insn);
@@ -141,3 +175,72 @@ int jit_insn_mark_breakpoint_variable(LibJIT::Function func, LibJIT::Value data1
 # ignoring jit_insn_iter_init_last
 # ignoring jit_insn_iter_next
 # ignoring jit_insn_iter_previous
+LibJIT::Type jit_type_copy(LibJIT::Type type);
+void jit_type_free(LibJIT::Type type);
+# ignoring jit_type_create_struct
+# ignoring jit_type_create_union
+# ignoring jit_type_create_signature
+LibJIT::Type jit_type_create_pointer(LibJIT::Type type, int incref);
+# ignoring jit_type_create_tagged
+# ignoring jit_type_set_names
+void jit_type_set_size_and_alignment(LibJIT::Type type, jit_nint size, jit_nint alignment);
+void jit_type_set_offset(LibJIT::Type type, unsigned int field_index, jit_nuint offset);
+int jit_type_get_kind(LibJIT::Type type);
+jit_nuint jit_type_get_size(LibJIT::Type type);
+jit_nuint jit_type_get_alignment(LibJIT::Type type);
+unsigned int jit_type_num_fields(LibJIT::Type type);
+LibJIT::Type jit_type_get_field(LibJIT::Type type, unsigned int field_index);
+jit_nuint jit_type_get_offset(LibJIT::Type type, unsigned int field_index);
+unsigned int jit_type_find_name(LibJIT::Type type, const char *name);
+unsigned int jit_type_num_params(LibJIT::Type type);
+LibJIT::Type jit_type_get_return(LibJIT::Type type);
+LibJIT::Type jit_type_get_param(LibJIT::Type type, unsigned int param_index);
+jit_abi_t jit_type_get_abi(LibJIT::Type type);
+LibJIT::Type jit_type_get_ref(LibJIT::Type type);
+LibJIT::Type jit_type_get_tagged_type(LibJIT::Type type);
+void jit_type_set_tagged_type(LibJIT::Type type, LibJIT::Type underlying, int incref);
+int jit_type_get_tagged_kind(LibJIT::Type type);
+# ignoring jit_type_get_tagged_data
+# ignoring jit_type_set_tagged_data
+int jit_type_is_primitive(LibJIT::Type type);
+int jit_type_is_struct(LibJIT::Type type);
+int jit_type_is_union(LibJIT::Type type);
+int jit_type_is_signature(LibJIT::Type type);
+int jit_type_is_pointer(LibJIT::Type type);
+int jit_type_is_tagged(LibJIT::Type type);
+jit_nuint jit_type_best_alignment(void);
+LibJIT::Type jit_type_normalize(LibJIT::Type type);
+LibJIT::Type jit_type_remove_tags(LibJIT::Type type);
+LibJIT::Type jit_type_promote_int(LibJIT::Type type);
+int jit_type_return_via_pointer(LibJIT::Type type);
+int jit_type_has_tag(LibJIT::Type type, int kind);
+LibJIT::Value jit_value_create(LibJIT::Function func, LibJIT::Type type);
+LibJIT::Value jit_value_create_nint_constant(LibJIT::Function func, LibJIT::Type type, jit_nint const_value);
+LibJIT::Value jit_value_create_long_constant(LibJIT::Function func, LibJIT::Type type, jit_long const_value);
+LibJIT::Value jit_value_create_float32_constant(LibJIT::Function func, LibJIT::Type type, jit_float32 const_value);
+LibJIT::Value jit_value_create_float64_constant(LibJIT::Function func, LibJIT::Type type, jit_float64 const_value);
+LibJIT::Value jit_value_create_nfloat_constant(LibJIT::Function func, LibJIT::Type type, jit_nfloat const_value);
+# ignoring jit_value_create_constant
+LibJIT::Value jit_value_get_param(LibJIT::Function func, unsigned int param);
+LibJIT::Value jit_value_get_struct_pointer(LibJIT::Function func);
+int jit_value_is_temporary(LibJIT::Value value);
+int jit_value_is_local(LibJIT::Value value);
+int jit_value_is_constant(LibJIT::Value value);
+int jit_value_is_parameter(LibJIT::Value value);
+void jit_value_ref(LibJIT::Function func, LibJIT::Value value);
+void jit_value_set_volatile(LibJIT::Value value);
+int jit_value_is_volatile(LibJIT::Value value);
+void jit_value_set_addressable(LibJIT::Value value);
+int jit_value_is_addressable(LibJIT::Value value);
+LibJIT::Type jit_value_get_type(LibJIT::Value value);
+LibJIT::Function jit_value_get_function(LibJIT::Value value);
+LibJIT::Block jit_value_get_block(LibJIT::Value value);
+LibJIT::Context jit_value_get_context(LibJIT::Value value);
+# ignoring jit_value_get_constant
+jit_nint jit_value_get_nint_constant(LibJIT::Value value);
+jit_long jit_value_get_long_constant(LibJIT::Value value);
+jit_float32 jit_value_get_float32_constant(LibJIT::Value value);
+jit_float64 jit_value_get_float64_constant(LibJIT::Value value);
+jit_nfloat jit_value_get_nfloat_constant(LibJIT::Value value);
+int jit_value_is_true(LibJIT::Value value);
+# ignoring jit_constant_convert

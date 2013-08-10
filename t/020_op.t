@@ -6,6 +6,7 @@ use warnings;
 use Test::More tests => 2;
 
 use LibJIT::API qw(:all);
+use LibJIT::PerlAPI qw(:all);
 use B::Replace;
 use B::Generate;
 use B;
@@ -35,8 +36,8 @@ my $thx = jit_value_get_param($fun, 0);
 
 # padsv, no lval_intro or deref
 my $padix = jit_value_create_nint_constant($fun, jit_type_nint, $add->first->targ);
-my $t1 = LibJIT::PerlAPI::pa_get_pad_sv($fun, $thx, $padix);
-my $tleft = LibJIT::PerlAPI::pa_sv_2nv($fun, $thx, $t1);
+my $t1 = pa_get_pad_sv($fun, $thx, $padix);
+my $tleft = pa_sv_2nv($fun, $thx, $t1);
 
 # float const, in pad if threaded
 my $constsv = ${$add->last->sv} ? ${$add->last->sv} : $inc->PADLIST->ARRAYelt(1)->ARRAYelt($add->last->targ);
@@ -46,10 +47,10 @@ my $tright = jit_value_create_float64_constant($fun, jit_type_float64, ${$consts
 my $tres = jit_insn_add($fun, $tleft, $tright);
 
 # set targ and push
-my $targ = LibJIT::PerlAPI::pa_get_targ($fun, $thx);
-LibJIT::PerlAPI::pa_sv_set_nv($fun, $thx, $targ, $tres);
-LibJIT::PerlAPI::pa_push_sv($fun, $thx, $targ);
-jit_insn_return($fun, LibJIT::PerlAPI::pa_get_op_next($fun, $thx));
+my $targ = pa_get_targ($fun, $thx);
+pa_sv_set_nv($fun, $thx, $targ, $tres);
+pa_push_sv($fun, $thx, $targ);
+jit_insn_return($fun, pa_get_op_next($fun, $thx));
 
 jit_function_compile($fun);
 jit_context_build_end($cxt);
