@@ -1,7 +1,9 @@
 #include <EXTERN.h>
 #include <perl.h>
 
-#include "gen-jitapi.h"
+#include "jitapi.h"
+
+#define LIBJIT_THX_TYPE 4242
 
 static SV *_pa_get_pad_sv(pTHX_ jit_nint padix)
 {
@@ -46,3 +48,22 @@ static void _pa_trap(pTHX)
 }
 
 #include "gen-jitapi.inc"
+
+#ifdef PERL_IMPLICIT_CONTEXT
+static jit_type_t pp_signature[] = { jit_type_void_ptr };
+#else
+static jit_type_t pp_signature[] = {};
+#endif
+
+jit_function_t pa_create_pp(jit_context_t context)
+{
+    jit_type_t signature = jit_type_create_signature(
+        jit_abi_cdecl, jit_type_void_ptr, pp_signature, SIZE(pp_signature), 0);
+    jit_function_t pp = jit_function_create(context, signature);
+#ifdef PERL_IMPLICIT_CONTEXT
+    jit_value_t thx = jit_value_get_param(pp, 0);
+    jit_function_set_meta(pp, LIBJIT_THX_TYPE, thx, 0, 1);
+#endif
+
+    return pp;
+}

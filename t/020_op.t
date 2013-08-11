@@ -28,16 +28,14 @@ my $cxt = jit_context_create();
 
 jit_context_build_start($cxt);
 
-# TODO actually dispatch the optree...
-my $signature = jit_type_create_signature(
-    jit_abi_cdecl, jit_type_void_ptr, [jit_type_void_ptr], 1);
-my $fun = jit_function_create($cxt, $signature);
-my $thx = jit_value_get_param($fun, 0);
+# The code below makes a lot of assumptions about optree structure: do not
+# use it as a model!
+my $fun = pa_create_pp($cxt);
 
 # padsv, no lval_intro or deref
 my $padix = jit_value_create_nint_constant($fun, jit_type_nint, $add->first->targ);
-my $t1 = pa_get_pad_sv($fun, $thx, $padix);
-my $tleft = pa_sv_2nv($fun, $thx, $t1);
+my $t1 = pa_get_pad_sv($fun, $padix);
+my $tleft = pa_sv_2nv($fun, $t1);
 
 # float const, in pad if threaded
 my $constsv = ${$add->last->sv} ? ${$add->last->sv} : $inc->PADLIST->ARRAYelt(1)->ARRAYelt($add->last->targ);
@@ -47,10 +45,10 @@ my $tright = jit_value_create_float64_constant($fun, jit_type_float64, ${$consts
 my $tres = jit_insn_add($fun, $tleft, $tright);
 
 # set targ and push
-my $targ = pa_get_targ($fun, $thx);
-pa_sv_set_nv($fun, $thx, $targ, $tres);
-pa_push_sv($fun, $thx, $targ);
-jit_insn_return($fun, pa_get_op_next($fun, $thx));
+my $targ = pa_get_targ($fun);
+pa_sv_set_nv($fun, $targ, $tres);
+pa_push_sv($fun, $targ);
+jit_insn_return($fun, pa_get_op_next($fun));
 
 jit_function_compile($fun);
 jit_context_build_end($cxt);

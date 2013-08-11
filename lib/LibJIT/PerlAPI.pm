@@ -11,6 +11,7 @@ use Exporter 'import';
 our @AutoFunctions; # from API_exports
 
 my @Functions = (qw(
+    pa_create_pp
 ), @AutoFunctions);
 
 our @EXPORT_OK = (@Functions);

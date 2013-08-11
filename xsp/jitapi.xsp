@@ -1,0 +1,8 @@
+%module{LibJIT};
+
+%package{LibJIT::PerlAPI};
+
+#include "helpers.h"
+#include "jitapi.h"
+
+LibJIT::Function pa_create_pp(LibJIT::Context context);
