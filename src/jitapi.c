@@ -10,7 +10,7 @@ static SV *_pa_get_pad_sv(pTHX_ jit_nint padix)
     return PAD_SVl(padix);
 }
 
-static jit_float64 _pa_sv_2nv(pTHX_ SV *sv)
+static jit_float64 _pa_sv_nv(pTHX_ SV *sv)
 {
     return SvNV(sv);
 }

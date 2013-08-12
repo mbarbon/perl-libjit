@@ -5,7 +5,7 @@ package LibJIT::PerlAPI;
 
 our @AutoFunctions = qw(
     pa_get_pad_sv
-    pa_sv_2nv
+    pa_sv_nv
     pa_get_targ
     pa_sv_set_iv
     pa_sv_set_nv

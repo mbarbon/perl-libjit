@@ -12,13 +12,13 @@ jit_value_t pa_get_pad_sv(jit_function_t function, jit_value_t padix)
     return jit_insn_call_native(function, "pa_get_pad_sv", (void *)_pa_get_pad_sv, _pa_get_pad_sv_sig, _args, SIZE(_args), 0);
 }
 
-static jit_type_t _pa_sv_2nv_parms[] = {jit_tTHX, jit_type_void_ptr};
-static jit_type_t _pa_sv_2nv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_float64, _pa_sv_2nv_parms, SIZE(_pa_sv_2nv_parms), 1);
+static jit_type_t _pa_sv_nv_parms[] = {jit_tTHX, jit_type_void_ptr};
+static jit_type_t _pa_sv_nv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_float64, _pa_sv_nv_parms, SIZE(_pa_sv_nv_parms), 1);
 
-jit_value_t pa_sv_2nv(jit_function_t function, jit_value_t sv)
+jit_value_t pa_sv_nv(jit_function_t function, jit_value_t sv)
 {
     jit_value_t _args[] = {jit_aTHX, sv};
-    return jit_insn_call_native(function, "pa_sv_2nv", (void *)_pa_sv_2nv, _pa_sv_2nv_sig, _args, SIZE(_args), 0);
+    return jit_insn_call_native(function, "pa_sv_nv", (void *)_pa_sv_nv, _pa_sv_nv_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_get_targ_parms[] = {jit_tTHX};

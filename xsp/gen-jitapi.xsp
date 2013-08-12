@@ -9,7 +9,7 @@
 #include "jitapi.h"
 
 LibJIT::Value pa_get_pad_sv(LibJIT::Function function, LibJIT::Value padix);
-LibJIT::Value pa_sv_2nv(LibJIT::Function function, LibJIT::Value sv);
+LibJIT::Value pa_sv_nv(LibJIT::Function function, LibJIT::Value sv);
 LibJIT::Value pa_get_targ(LibJIT::Function function);
 LibJIT::Value pa_sv_set_iv(LibJIT::Function function, LibJIT::Value sv, LibJIT::Value iv);
 LibJIT::Value pa_sv_set_nv(LibJIT::Function function, LibJIT::Value sv, LibJIT::Value nv);
