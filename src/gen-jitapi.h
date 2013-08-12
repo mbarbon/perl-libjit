@@ -17,6 +17,8 @@
 
 jit_value_t pa_get_pad_sv(jit_function_t function, jit_value_t padix);
 jit_value_t pa_sv_nv(jit_function_t function, jit_value_t sv);
+jit_value_t pa_sv_2mortal(jit_function_t function, jit_value_t sv);
+jit_value_t pa_new_sv_nv(jit_function_t function, jit_value_t nv);
 jit_value_t pa_get_targ(jit_function_t function);
 jit_value_t pa_sv_set_iv(jit_function_t function, jit_value_t sv, jit_value_t iv);
 jit_value_t pa_sv_set_nv(jit_function_t function, jit_value_t sv, jit_value_t nv);

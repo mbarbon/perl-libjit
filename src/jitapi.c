@@ -15,6 +15,16 @@ static jit_float64 _pa_sv_nv(pTHX_ SV *sv)
     return SvNV(sv);
 }
 
+static SV *_pa_sv_2mortal(pTHX_ SV *sv)
+{
+    return sv_2mortal(sv);
+}
+
+static SV *_pa_new_sv_nv(pTHX_ jit_float64 nv)
+{
+    return newSVnv(nv);
+}
+
 static SV *_pa_get_targ(pTHX)
 {
     return PAD_SV(PL_op->op_targ);
