@@ -12,6 +12,8 @@ our @AutoFunctions = qw(
     pa_sv_set_iv
     pa_sv_set_nv
     pa_push_sv
+    pa_call_runloop
+    pa_pop_sv
     pa_get_op_next
     pa_trap
 );

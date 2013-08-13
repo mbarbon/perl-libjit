@@ -47,6 +47,20 @@ static void _pa_push_sv(pTHX_ SV *sv)
     PUTBACK;
 }
 
+static void _pa_call_runloop(pTHX_ OP *op)
+{
+    OP *oldop = PL_op;
+    PL_op = op;
+    CALLRUNOPS(aTHX);
+    PL_op = oldop;
+}
+
+static SV *_pa_pop_sv(pTHX)
+{
+    dSP;
+    return POPs;
+}
+
 static OP *_pa_get_op_next(pTHX)
 {
     return PL_op->op_next;
