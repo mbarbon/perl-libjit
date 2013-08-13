@@ -71,6 +71,10 @@ my @Constants = qw(
     jit_type_sys_float
     jit_type_sys_double
     jit_type_sys_long_double
+
+    jit_type_NV
+    jit_type_IV
+    jit_type_UV
 );
 
 our @EXPORT_OK = (@Functions, @Constants);
