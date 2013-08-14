@@ -32,6 +32,10 @@ my @Functions = (qw(
     jit_type_create_struct
     jit_type_create_union
     jit_type_create_signature
+
+    jit_value_create_NV_constant
+    jit_value_create_UV_constant
+    jit_value_create_IV_constant
 ), @AutoFunctions);
 
 my @Constants = qw(
