@@ -20,6 +20,14 @@ namespace LibJIT
     typedef jit_value_t Value;
 }
 
+extern jit_type_t LJ_jit_type_NV;
+extern jit_type_t LJ_jit_type_IV;
+extern jit_type_t LJ_jit_type_UV;
+
+jit_value_t jit_value_create_NV_constant(jit_function_t func, const NV value);
+jit_value_t jit_value_create_IV_constant(jit_function_t func, const IV value);
+jit_value_t jit_value_create_UV_constant(jit_function_t func, const UV value);
+
 void lj_define_types(pTHX);
 void lj_define_constants(pTHX);
 void lj_define_intrinsics(pTHX);

@@ -1,6 +1,17 @@
 %loadplugin{feature::default_xs_typemap};
 
 %typemap{IV}{simple};
+%typemap{UV}{simple};
+%typemap{NV}{simple};
+%typemap{const IV}{simple}{
+    %xs_type{T_IV};
+};
+%typemap{const UV}{simple}{
+    %xs_type{T_UV};
+};
+%typemap{const NV}{simple}{
+    %xs_type{T_NV};
+};
 
 %typemap{jit_abi_t}{simple}{
     %xs_type{T_ENUM};
