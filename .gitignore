@@ -13,3 +13,4 @@
 *.obj
 .*.swp
 .*.swo
+src/jit_perl_typemapping.h

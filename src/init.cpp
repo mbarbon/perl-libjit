@@ -1,8 +1,5 @@
 #include "helpers.h"
-
-jit_type_t LJ_jit_type_NV;
-jit_type_t LJ_jit_type_IV;
-jit_type_t LJ_jit_type_UV;
+#include "jit_perl_typemapping.h"
 
 #define DEFINE_TYPE(name) \
     lj_define_type(aTHX_ jit_type_##name, "jit_type_" #name)
@@ -71,51 +68,9 @@ void lj_define_types(pTHX)
     DEFINE_TYPE(sys_double);
     DEFINE_TYPE(sys_long_double);
 
-    // Now find and define the jit_type_t for the basic Perl types NV, IV, UV.
-    // A more table driven approach would be tempting.
-#define TEST_TYPE(out_var, ref, type)               \
-    if ((ref) == (size_t)jit_type_get_size((type))) \
-        out_var = type
-
-    const size_t nv_size = sizeof(NV);
-    TEST_TYPE(LJ_jit_type_NV, nv_size, jit_type_nfloat);
-    else TEST_TYPE(LJ_jit_type_NV, nv_size, jit_type_float64);
-    else TEST_TYPE(LJ_jit_type_NV, nv_size, jit_type_float32);
-    else TEST_TYPE(LJ_jit_type_NV, nv_size, jit_type_sys_float);
-    else TEST_TYPE(LJ_jit_type_NV, nv_size, jit_type_sys_double);
-    else TEST_TYPE(LJ_jit_type_NV, nv_size, jit_type_sys_long_double);
-    else {
-        croak("Failed to find JIT floating point type that has the same size as Perl's NVs");
-    }
-    lj_define_type(aTHX_ LJ_jit_type_NV, "jit_type_NV");
-
-    const size_t iv_size = sizeof(IV);
-    TEST_TYPE(LJ_jit_type_IV, iv_size, jit_type_nint);
-    else TEST_TYPE(LJ_jit_type_IV, iv_size, jit_type_int);
-    else TEST_TYPE(LJ_jit_type_IV, iv_size, jit_type_long);
-    else TEST_TYPE(LJ_jit_type_IV, iv_size, jit_type_short);
-    else TEST_TYPE(LJ_jit_type_IV, iv_size, jit_type_sys_int);
-    else TEST_TYPE(LJ_jit_type_IV, iv_size, jit_type_sys_long);
-    else TEST_TYPE(LJ_jit_type_IV, iv_size, jit_type_sys_longlong);
-    else TEST_TYPE(LJ_jit_type_IV, iv_size, jit_type_sys_short);
-    else {
-        croak("Failed to find JIT signed integer type that has the same size as Perl's IVs");
-    }
-    lj_define_type(aTHX_ LJ_jit_type_IV, "jit_type_IV");
-
-    const size_t uv_size = sizeof(UV);
-    TEST_TYPE(LJ_jit_type_UV, uv_size, jit_type_nuint);
-    else TEST_TYPE(LJ_jit_type_UV, uv_size, jit_type_uint);
-    else TEST_TYPE(LJ_jit_type_UV, uv_size, jit_type_ulong);
-    else TEST_TYPE(LJ_jit_type_UV, uv_size, jit_type_sys_uint);
-    else TEST_TYPE(LJ_jit_type_UV, uv_size, jit_type_sys_ulong);
-    else TEST_TYPE(LJ_jit_type_UV, uv_size, jit_type_sys_ulonglong);
-    else TEST_TYPE(LJ_jit_type_UV, uv_size, jit_type_sys_ushort);
-    else {
-        croak("Failed to find JIT unsigned integer type that has the same size as Perl's UVs");
-    }
-    lj_define_type(aTHX_ LJ_jit_type_UV, "jit_type_UV");
-#undef TEST_TYPE
+    DEFINE_TYPE(NV);
+    DEFINE_TYPE(IV);
+    DEFINE_TYPE(UV);
 }
 
 void lj_define_constants(pTHX)
@@ -184,15 +139,11 @@ jit_value_t
 jit_value_create_NV_constant(jit_function_t func, const NV value)
 {
   jit_constant_t c;
-  c.type = LJ_jit_type_NV;
+  c.type = jit_type_NV;
   /* Need to use correct type here since conversion to a larger float may,
    * I think, cause conversion & might be lossy? {citation required} */
-  if (sizeof(NV) == sizeof(jit_nfloat))
-    c.un.nfloat_value = value;
-  else if (sizeof(NV) == sizeof(jit_float64))
-    c.un.float64_value = value;
-  else
-    c.un.float32_value = value;
+  /* See src/jit_perl_typemapping.h */
+  c.un.LJ_NV_CONST_UNION_MEMBER = (jit_NV)value;
   return jit_value_create_constant(func, &c);
 }
 
@@ -201,22 +152,12 @@ jit_value_t
 jit_value_create_IV_constant(jit_function_t func, const IV value)
 {
   jit_constant_t c;
-  c.type = LJ_jit_type_IV;
+  c.type = jit_type_IV;
   /* If we just use the largest type here, then later, jit_value_create_constant
    * will use the correct type and value. At least for ints, this must yield the
    * correct number. */
-  if (sizeof(jit_nint) >= sizeof(jit_long)) {
-    if (sizeof(jit_nint) >= sizeof(jit_int))
-      c.un.nint_value = value;
-    else
-      c.un.int_value = value;
-  }
-  else {
-    if (sizeof(jit_long) >= sizeof(jit_int))
-      c.un.long_value = value;
-    else
-      c.un.int_value = value;
-  }
+  /* See src/jit_perl_typemapping.h */
+  c.un.LJ_IV_CONST_UNION_MEMBER = (jit_IV)value; /* Macro, see src/jit_perl_typemapping.h */
   return jit_value_create_constant(func, &c);
 }
 
@@ -225,22 +166,12 @@ jit_value_t
 jit_value_create_UV_constant(jit_function_t func, const UV value)
 {
   jit_constant_t c;
-  c.type = LJ_jit_type_UV;
+  c.type = jit_type_UV;
   /* If we just use the largest type here, then later, jit_value_create_constant
    * will use the correct type and value. At least for ints, this must yield the
    * correct number. */
-  if (sizeof(jit_nuint) >= sizeof(jit_ulong)) {
-    if (sizeof(jit_nuint) >= sizeof(jit_uint))
-      c.un.nuint_value = value;
-    else
-      c.un.uint_value = value;
-  }
-  else {
-    if (sizeof(jit_ulong) >= sizeof(jit_uint))
-      c.un.ulong_value = value;
-    else
-      c.un.uint_value = value;
-  }
+  /* See src/jit_perl_typemapping.h */
+  c.un.LJ_UV_CONST_UNION_MEMBER = (jit_UV)value; /* Macro, see src/jit_perl_typemapping.h */
   return jit_value_create_constant(func, &c);
 }
 
