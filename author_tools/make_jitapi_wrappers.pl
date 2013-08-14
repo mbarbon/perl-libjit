@@ -20,6 +20,7 @@ sub jit_type {
     $text =~ s/^\s+|\s+$//g;
     $text =~ s/\s+\w+\s*$//;
 
+    return "jit_type_$1" if $text =~ /^(?:jit_)?([IUN]V)/;
     return 'jit_type_void_ptr' if $text =~ /\*/;
     return "jit_type_$1" if $text =~ /^jit_(\w+)$/;
     return 'jit_type_void' if $text eq 'void';

@@ -2,6 +2,7 @@
 #include <perl.h>
 
 #include "jitapi.h"
+#include "jit_perl_typemapping.h"
 
 #define LIBJIT_THX_TYPE 4242
 
@@ -10,9 +11,19 @@ static SV *_pa_get_pad_sv(pTHX_ jit_nint padix)
     return PAD_SVl(padix);
 }
 
-static jit_float64 _pa_sv_nv(pTHX_ SV *sv)
+static jit_NV _pa_sv_nv(pTHX_ SV *sv)
 {
     return SvNV(sv);
+}
+
+static jit_IV _pa_sv_iv(pTHX_ SV *sv)
+{
+    return SvIV(sv);
+}
+
+static jit_UV _pa_sv_uv(pTHX_ SV *sv)
+{
+    return SvUV(sv);
 }
 
 static SV *_pa_sv_2mortal(pTHX_ SV *sv)
@@ -20,9 +31,19 @@ static SV *_pa_sv_2mortal(pTHX_ SV *sv)
     return sv_2mortal(sv);
 }
 
-static SV *_pa_new_sv_nv(pTHX_ jit_float64 nv)
+static sv *_pa_new_sv_nv(pTHX_ jit_NV nv)
 {
     return newSVnv(nv);
+}
+
+static SV *_pa_new_sv_iv(pTHX_ jit_IV iv)
+{
+    return newSViv(iv);
+}
+
+static SV *_pa_new_sv_uv(pTHX_ jit_UV uv)
+{
+    return newSVuv(uv);
 }
 
 static SV *_pa_get_targ(pTHX)
@@ -30,12 +51,12 @@ static SV *_pa_get_targ(pTHX)
     return PAD_SV(PL_op->op_targ);
 }
 
-static void _pa_sv_set_iv(pTHX_ SV *sv, jit_nint iv)
+static void _pa_sv_set_iv(pTHX_ SV *sv, jit_IV iv)
 {
     SvIV_set(sv, iv);
 }
 
-static void _pa_sv_set_nv(pTHX_ SV *sv, jit_float64 nv)
+static void _pa_sv_set_nv(pTHX_ SV *sv, jit_NV nv)
 {
     sv_setnv(sv, nv);
 }
