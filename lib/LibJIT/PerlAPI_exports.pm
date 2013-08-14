@@ -6,8 +6,12 @@ package LibJIT::PerlAPI;
 our @AutoFunctions = qw(
     pa_get_pad_sv
     pa_sv_nv
+    pa_sv_iv
+    pa_sv_uv
     pa_sv_2mortal
     pa_new_sv_nv
+    pa_new_sv_iv
+    pa_new_sv_uv
     pa_get_targ
     pa_sv_set_iv
     pa_sv_set_nv
