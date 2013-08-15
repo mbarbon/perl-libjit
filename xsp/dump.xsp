@@ -1,0 +1,13 @@
+%module{LibJIT};
+
+%package{LibJIT::API};
+
+#include "helpers.h"
+#include <jit/jit.h>
+#include <jit/jit-dump.h>
+
+void jit_dump_function(FILE *stream, LibJIT::Function func, char *name);
+void jit_dump_insn(FILE *stream, LibJIT::Function func, LibJIT::Insn insn);
+void jit_dump_value(FILE *stream, LibJIT::Function func, LibJIT::Value value, const char *prefix);
+void jit_dump_type(FILE *stream, LibJIT::Type type);
+

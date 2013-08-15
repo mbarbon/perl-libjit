@@ -45,6 +45,8 @@
     %xs_type{T_NV};
 };
 
+%typemap{FILE *}{simple};
+
 %typemap{std::vector<jit_type_t>}{simple}{
     %xs_type{T_VECTOR_TYPE};
     %xs_input_code{% $var = lj_convert_avref_to_object_array<jit_type_t>(aTHX_ $arg); %};
