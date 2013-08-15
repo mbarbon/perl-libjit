@@ -34,6 +34,19 @@ void lj_define_type(pTHX_ jit_type_t type, const char *name)
     newCONSTSUB(hv, name, sv);
 }
 
+void lj_define_instance(pTHX_ void *thing, const char *perl_name, const char *perl_class)
+{
+    char buffer[64];
+
+    strcpy(buffer, "LibJIT::API::");
+    strcat(buffer, perl_name);
+
+    SV *sv = sv_setref_pv(get_sv(buffer, 1), perl_class, thing);
+    HV *hv = gv_stashpvs("LibJIT::API", 1);
+
+    newCONSTSUB(hv, perl_name, sv);
+}
+
 void lj_define_types(pTHX)
 {
     DEFINE_TYPE(void);
@@ -80,7 +93,7 @@ void lj_define_constants(pTHX)
     DEFINE_INT(jit_abi_stdcall);
     DEFINE_INT(jit_abi_fastcall);
 
-    DEFINE_INT(jit_label_undefined);
+    lj_define_instance(aTHX_ (void *)jit_label_undefined, "jit_label_undefined", "LibJIT::Label");
 
     DEFINE_INT(JIT_TYPE_INVALID);
     DEFINE_INT(JIT_TYPE_VOID);

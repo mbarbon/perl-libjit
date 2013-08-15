@@ -44,6 +44,8 @@ my @Constants = qw(
     jit_abi_stdcall
     jit_abi_fastcall
 
+    jit_label_undefined
+
     jit_type_void
     jit_type_sbyte
     jit_type_ubyte
