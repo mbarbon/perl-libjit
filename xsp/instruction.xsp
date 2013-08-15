@@ -4,6 +4,9 @@
 
 #include "helpers.h"
 
+LibJIT::Label jit_label_undefined()
+    %code{% RETVAL = jit_label_undefined; %}; // jit_label_undefined is not a function!
+
 IV jit_insn_get_native(LibJIT::Insn insn)
     %code{% RETVAL = (IV) jit_insn_get_native(insn); %};
 
@@ -16,21 +19,44 @@ LibJIT::Value jit_insn_call_indirect(LibJIT::Function func, LibJIT::Value value,
 LibJIT::Value jit_insn_call_native(LibJIT::Function func, const char *name, IV native_func, LibJIT::Type signature, std::vector<jit_value_t> args, int flags)
     %code{% RETVAL = jit_insn_call_native(func, name, INT2PTR(void *, native_func), signature, &args[0], args.size(), flags); %};
 
-{%
 
 void
-jit_insn_label(LibJIT::Function func, IN_OUTLIST LibJIT::Label label)
+jit_insn_label(LibJIT::Function func, LibJIT::LabelSV label)
+    %code{%
+        jit_label_t tmp = (jit_label_t)SvIV((SV *)label);
+        jit_insn_label(func, &tmp);
+        SvIV_set((SV *)label, (IV)tmp);
+    %};
 
 void
-jit_insn_branch(LibJIT::Function func, IN_OUTLIST LibJIT::Label label);
+jit_insn_branch(LibJIT::Function func, LibJIT::LabelSV label)
+    %code{%
+        jit_label_t tmp = (jit_label_t)SvIV((SV *)label);
+        jit_insn_branch(func, &tmp);
+        SvIV_set((SV *)label, (IV)tmp);
+    %};
 
 void
-jit_insn_branch_if(LibJIT::Function func, LibJIT::Value value, IN_OUTLIST LibJIT::Label label);
+jit_insn_branch_if(LibJIT::Function func, LibJIT::Value value, LibJIT::LabelSV label)
+    %code{%
+        jit_label_t tmp = (jit_label_t)SvIV((SV *)label);
+        jit_insn_branch_if(func, value, &tmp);
+        SvIV_set((SV *)label, (IV)tmp);
+    %};
 
 void
-jit_insn_branch_if_not(LibJIT::Function func, LibJIT::Value value, IN_OUTLIST LibJIT::Label label);
+jit_insn_branch_if_not(LibJIT::Function func, LibJIT::Value value, LibJIT::LabelSV label)
+    %code{%
+        jit_label_t tmp = (jit_label_t)SvIV((SV *)label);
+        jit_insn_branch_if_not(func, value, &tmp);
+        SvIV_set((SV *)label, (IV)tmp);
+    %};
 
 LibJIT::Value
-jit_insn_address_of_label(LibJIT::Function func, IN_OUTLIST LibJIT::Label label);
+jit_insn_address_of_label(LibJIT::Function func, LibJIT::Label label)
+    %code{%
+        jit_label_t tmp = (jit_label_t)SvIV((SV *)label);
+        RETVAL = jit_insn_address_of_label(func, &tmp);
+        SvIV_set((SV *)label, (IV)tmp);
+    %};
 
-%}

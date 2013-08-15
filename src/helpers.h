@@ -18,6 +18,8 @@ namespace LibJIT
     typedef jit_label_t Label;
     typedef jit_type_t Type;
     typedef jit_value_t Value;
+    typedef SV * LabelSV; /* Label, verified in typemap, with the
+                           * RV stripped, but modifiable since SV* holding IV */
 }
 
 jit_value_t jit_value_create_NV_constant(jit_function_t func, const NV value);

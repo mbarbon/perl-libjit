@@ -65,3 +65,15 @@
 %typemap{LibJIT::Label}{object};
 %typemap{LibJIT::Type}{object};
 %typemap{LibJIT::Value}{object};
+%typemap{LibJIT::LabelSV}{simple}{
+    %xs_type{O_OBJECT_INPLACE};
+    %xs_input_code{%
+        if( sv_isobject($arg) && (SvTYPE(SvRV($arg)) == SVt_PVMG) )
+            $var = ($type)SvRV( $arg );
+        else {
+            croak( \"${Package}::$func_name() -- $var is not a blessed SV reference\" );
+        }
+    %};
+};
+
+
