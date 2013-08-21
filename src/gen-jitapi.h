@@ -10,9 +10,13 @@
 #define jit_gTHX  ((jit_value_t) jit_function_get_meta(function, LIBJIT_THX_TYPE))
 #define jit_tTHX  jit_type_void_ptr
 #define jit_aTHX  jit_gTHX
+#define jit_tTHX_  jit_type_void_ptr,
+#define jit_aTHX_  jit_gTHX,
 #else
 #define jit_tTHX
 #define jit_aTHX
+#define jit_tTHX_
+#define jit_aTHX_
 #endif
 
 jit_value_t pa_get_pad_sv(jit_function_t function, jit_value_t padix);

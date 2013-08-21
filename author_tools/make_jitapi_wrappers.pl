@@ -47,9 +47,9 @@ sub process_function {
     my $jit_ret_type = jit_type($ret);
     my @jit_arg_types = map jit_type($_), @args;
     my @jit_arg_names = map arg_name($_), @args;
-    my $jitparms = @jit_arg_names ? join ', ', ('', map "jit_value_t $_", @jit_arg_names) : '';
-    my $jittypes = @jit_arg_types ? join ', ', ('', @jit_arg_types) : '';
-    my $jitargs = @jit_arg_names ? join ', ', ('', @jit_arg_names) : '';
+    my $jitparms = @jit_arg_names ? join(', ', '', map "jit_value_t $_", @jit_arg_names) : '';
+    my $jittypes = @jit_arg_types ? "_ " . join(', ', @jit_arg_types) : '';
+    my $jitargs = @jit_arg_names ? "_ " . join(', ', @jit_arg_names) : '';
 
     my $c = <<EOT;
 static jit_type_t _${func}_parms[] = {jit_tTHX${jittypes}};
@@ -107,9 +107,13 @@ EOT
 #define jit_gTHX  ((jit_value_t) jit_function_get_meta(function, LIBJIT_THX_TYPE))
 #define jit_tTHX  jit_type_void_ptr
 #define jit_aTHX  jit_gTHX
+#define jit_tTHX_  jit_type_void_ptr,
+#define jit_aTHX_  jit_gTHX,
 #else
 #define jit_tTHX
 #define jit_aTHX
+#define jit_tTHX_
+#define jit_aTHX_
 #endif
 
 EOT
