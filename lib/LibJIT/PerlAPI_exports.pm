@@ -13,6 +13,7 @@ our @AutoFunctions = qw(
     pa_new_sv_iv
     pa_new_sv_uv
     pa_get_targ
+    pa_sv_true
     pa_sv_set_iv
     pa_sv_set_nv
     pa_push_sv

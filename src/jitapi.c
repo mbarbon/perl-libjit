@@ -51,6 +51,11 @@ static SV *_pa_get_targ(pTHX)
     return PAD_SV(PL_op->op_targ);
 }
 
+static jit_IV _pa_sv_true(pTHX_ SV *sv)
+{
+    return SvTRUE(sv);
+}
+
 static void _pa_sv_set_iv(pTHX_ SV *sv, jit_IV iv)
 {
     SvIV_set(sv, iv);

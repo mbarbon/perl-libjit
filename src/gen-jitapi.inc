@@ -84,6 +84,15 @@ jit_value_t pa_get_targ(jit_function_t function)
     return jit_insn_call_native(function, "pa_get_targ", (void *)_pa_get_targ, _pa_get_targ_sig, _args, SIZE(_args), 0);
 }
 
+static jit_type_t _pa_sv_true_parms[] = {jit_tTHX_ jit_type_void_ptr};
+static jit_type_t _pa_sv_true_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_IV, _pa_sv_true_parms, SIZE(_pa_sv_true_parms), 1);
+
+jit_value_t pa_sv_true(jit_function_t function, jit_value_t sv)
+{
+    jit_value_t _args[] = {jit_aTHX_ sv};
+    return jit_insn_call_native(function, "pa_sv_true", (void *)_pa_sv_true, _pa_sv_true_sig, _args, SIZE(_args), 0);
+}
+
 static jit_type_t _pa_sv_set_iv_parms[] = {jit_tTHX_ jit_type_void_ptr, jit_type_IV};
 static jit_type_t _pa_sv_set_iv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_sv_set_iv_parms, SIZE(_pa_sv_set_iv_parms), 1);
 
