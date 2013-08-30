@@ -7,4 +7,5 @@
 LibJIT::Value jit_value_create_NV_constant(LibJIT::Function func, const NV value);
 LibJIT::Value jit_value_create_IV_constant(LibJIT::Function func, const IV value);
 LibJIT::Value jit_value_create_UV_constant(LibJIT::Function func, const UV value);
+LibJIT::Value jit_value_create_undef_constant(LibJIT::Function func);
 

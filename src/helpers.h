@@ -25,6 +25,7 @@ namespace LibJIT
 jit_value_t jit_value_create_NV_constant(jit_function_t func, const NV value);
 jit_value_t jit_value_create_IV_constant(jit_function_t func, const IV value);
 jit_value_t jit_value_create_UV_constant(jit_function_t func, const UV value);
+jit_value_t jit_value_create_undef_constant(jit_function_t func);
 
 void lj_define_types(pTHX);
 void lj_define_constants(pTHX);

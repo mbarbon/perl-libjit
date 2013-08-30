@@ -173,3 +173,13 @@ jit_value_create_UV_constant(jit_function_t func, const UV value)
   return jit_value_create_constant(func, &c);
 }
 
+
+jit_value_t
+jit_value_create_undef_constant(jit_function_t func)
+{
+  jit_constant_t c;
+  dTHX; // I know...
+  c.type = jit_type_void_ptr;
+  c.un.ptr_value = &PL_sv_undef;
+  return jit_value_create_constant(func, &c);
+}
