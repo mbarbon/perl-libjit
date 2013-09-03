@@ -3,7 +3,10 @@
 use strict;
 use warnings;
 
-my @headers = map "libjit/include/jit/jit-${_}.h", qw(function insn type value);
+use Alien::LibJIT;
+
+my $include = Alien::LibJIT->new->include_dir;
+my @headers = map "$include/jit/jit-${_}.h", qw(function insn type value);
 
 system($^X, 'author_tools/make_jitapi_wrappers.pl',
        'src/jitapi.c',
