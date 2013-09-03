@@ -75,6 +75,15 @@ jit_value_t pa_new_sv_uv(jit_function_t function, jit_value_t uv)
     return jit_insn_call_native(function, "pa_new_sv_uv", (void *)_pa_new_sv_uv, _pa_new_sv_uv_sig, _args, SIZE(_args), 0);
 }
 
+static jit_type_t _pa_new_mortal_sv_parms[] = {jit_tTHX_ jit_type_UV};
+static jit_type_t _pa_new_mortal_sv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_new_mortal_sv_parms, SIZE(_pa_new_mortal_sv_parms), 1);
+
+jit_value_t pa_new_mortal_sv(jit_function_t function, jit_value_t uv)
+{
+    jit_value_t _args[] = {jit_aTHX_ uv};
+    return jit_insn_call_native(function, "pa_new_mortal_sv", (void *)_pa_new_mortal_sv, _pa_new_mortal_sv_sig, _args, SIZE(_args), 0);
+}
+
 static jit_type_t _pa_get_targ_parms[] = {jit_tTHX};
 static jit_type_t _pa_get_targ_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_get_targ_parms, SIZE(_pa_get_targ_parms), 1);
 

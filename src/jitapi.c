@@ -46,6 +46,11 @@ static SV *_pa_new_sv_uv(pTHX_ jit_UV uv)
     return newSVuv(uv);
 }
 
+static SV *_pa_new_mortal_sv(pTHX_ jit_UV uv)
+{
+    return sv_newmortal();
+}
+
 static SV *_pa_get_targ(pTHX)
 {
     return PAD_SV(PL_op->op_targ);
