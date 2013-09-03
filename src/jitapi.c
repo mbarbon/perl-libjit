@@ -58,7 +58,7 @@ static jit_IV _pa_sv_true(pTHX_ SV *sv)
 
 static void _pa_sv_set_iv(pTHX_ SV *sv, jit_IV iv)
 {
-    SvIV_set(sv, iv);
+    sv_setiv(sv, iv);
 }
 
 static void _pa_sv_set_nv(pTHX_ SV *sv, jit_NV nv)
