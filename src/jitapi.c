@@ -109,7 +109,9 @@ static void _pa_call_runloop(pTHX_ OP *op)
 static SV *_pa_pop_sv(pTHX)
 {
     dSP;
-    return POPs;
+    SV *sv = POPs;
+    PUTBACK;
+    return sv;
 }
 
 static OP *_pa_get_op_next(pTHX)
