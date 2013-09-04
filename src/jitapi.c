@@ -16,6 +16,11 @@ static SV *_pa_gv_sv(pTHX_ GV *gv)
     return GvSV(gv);
 }
 
+static SV *_pa_gv_svn(pTHX_ GV *gv)
+{
+    return GvSVn(gv);
+}
+
 static AV *_pa_gv_av(pTHX_ GV *gv)
 {
     return GvAV(gv);
