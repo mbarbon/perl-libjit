@@ -11,6 +11,21 @@ static SV *_pa_get_pad_sv(pTHX_ jit_nint padix)
     return PAD_SVl(padix);
 }
 
+static SV *_pa_gv_sv(pTHX_ GV *gv)
+{
+    return GvSV(gv);
+}
+
+static AV *_pa_gv_av(pTHX_ GV *gv)
+{
+    return GvAV(gv);
+}
+
+static HV *_pa_gv_hv(pTHX_ GV *gv)
+{
+    return GvHV(gv);
+}
+
 static jit_NV _pa_sv_nv(pTHX_ SV *sv)
 {
     return SvNV(sv);

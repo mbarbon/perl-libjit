@@ -12,6 +12,33 @@ jit_value_t pa_get_pad_sv(jit_function_t function, jit_value_t padix)
     return jit_insn_call_native(function, "pa_get_pad_sv", (void *)_pa_get_pad_sv, _pa_get_pad_sv_sig, _args, SIZE(_args), 0);
 }
 
+static jit_type_t _pa_gv_sv_parms[] = {jit_tTHX_ jit_type_void_ptr};
+static jit_type_t _pa_gv_sv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_gv_sv_parms, SIZE(_pa_gv_sv_parms), 1);
+
+jit_value_t pa_gv_sv(jit_function_t function, jit_value_t gv)
+{
+    jit_value_t _args[] = {jit_aTHX_ gv};
+    return jit_insn_call_native(function, "pa_gv_sv", (void *)_pa_gv_sv, _pa_gv_sv_sig, _args, SIZE(_args), 0);
+}
+
+static jit_type_t _pa_gv_av_parms[] = {jit_tTHX_ jit_type_void_ptr};
+static jit_type_t _pa_gv_av_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_gv_av_parms, SIZE(_pa_gv_av_parms), 1);
+
+jit_value_t pa_gv_av(jit_function_t function, jit_value_t gv)
+{
+    jit_value_t _args[] = {jit_aTHX_ gv};
+    return jit_insn_call_native(function, "pa_gv_av", (void *)_pa_gv_av, _pa_gv_av_sig, _args, SIZE(_args), 0);
+}
+
+static jit_type_t _pa_gv_hv_parms[] = {jit_tTHX_ jit_type_void_ptr};
+static jit_type_t _pa_gv_hv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_gv_hv_parms, SIZE(_pa_gv_hv_parms), 1);
+
+jit_value_t pa_gv_hv(jit_function_t function, jit_value_t gv)
+{
+    jit_value_t _args[] = {jit_aTHX_ gv};
+    return jit_insn_call_native(function, "pa_gv_hv", (void *)_pa_gv_hv, _pa_gv_hv_sig, _args, SIZE(_args), 0);
+}
+
 static jit_type_t _pa_sv_nv_parms[] = {jit_tTHX_ jit_type_void_ptr};
 static jit_type_t _pa_sv_nv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_NV, _pa_sv_nv_parms, SIZE(_pa_sv_nv_parms), 1);
 

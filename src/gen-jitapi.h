@@ -20,6 +20,9 @@
 #endif
 
 jit_value_t pa_get_pad_sv(jit_function_t function, jit_value_t padix);
+jit_value_t pa_gv_sv(jit_function_t function, jit_value_t gv);
+jit_value_t pa_gv_av(jit_function_t function, jit_value_t gv);
+jit_value_t pa_gv_hv(jit_function_t function, jit_value_t gv);
 jit_value_t pa_sv_nv(jit_function_t function, jit_value_t sv);
 jit_value_t pa_sv_iv(jit_function_t function, jit_value_t sv);
 jit_value_t pa_sv_uv(jit_function_t function, jit_value_t sv);
