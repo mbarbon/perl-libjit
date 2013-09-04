@@ -39,9 +39,12 @@ sub arg_name {
 sub process_function {
     my ($text) = @_;
 
-    $text =~ m{^static\s+(.+)_(pa_\w+)\(pTHX_?(?:\s*(.*))?\)$} or die "Unable to parse '$text'";
+    $text =~ m{^static\s+(.+)_(pa_\w+)\(pTHX_?(?:\s*(.*))?\)$} or
+        $text =~ m{^//\s+(.+)(Perl_\w+)\(pTHX_?(?:\s*(.*))?\)\s+=>\s+(\w+)$} or
+            die "Unable to parse '$text'";
 
-    my ($ret, $func, $args) = ($1, $2, $3);
+    my ($ret, $api, $args, $func) = ($1, $2, $3, $4 || $2);
+    my $ptr = $4 ? $api : "_${api}";
     my @args = split /\s*,\s*/, $args;
 
     my $jit_ret_type = jit_type($ret);
@@ -58,7 +61,7 @@ static jit_type_t _${func}_sig = jit_type_create_signature(jit_abi_cdecl, $jit_r
 jit_value_t ${func}(jit_function_t function${jitparms})
 {
     jit_value_t _args[] = {jit_aTHX$jitargs};
-    return jit_insn_call_native(function, "$func", (void *)_${func}, _${func}_sig, _args, SIZE(_args), 0);
+    return jit_insn_call_native(function, "$func", (void *)${ptr}, _${func}_sig, _args, SIZE(_args), 0);
 }
 
 EOT
@@ -140,7 +143,7 @@ package LibJIT::PerlAPI;
 our \@AutoFunctions = qw(
 EOT
 
-    while ($text =~ m{^(static.*\(.*\))$}mg) {
+    while ($text =~ m{^(static.*\(.*\)|//\s+.*Perl_\w+\(.*\)\s+=>\s+\w+)$}mg) {
         my ($c, $h, $xsp, $pm) = process_function($1);
 
         print $ofhc $c;

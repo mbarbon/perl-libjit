@@ -81,7 +81,7 @@ static jit_type_t _pa_sv_2mortal_sig = jit_type_create_signature(jit_abi_cdecl, 
 jit_value_t pa_sv_2mortal(jit_function_t function, jit_value_t sv)
 {
     jit_value_t _args[] = {jit_aTHX_ sv};
-    return jit_insn_call_native(function, "pa_sv_2mortal", (void *)_pa_sv_2mortal, _pa_sv_2mortal_sig, _args, SIZE(_args), 0);
+    return jit_insn_call_native(function, "pa_sv_2mortal", (void *)Perl_sv_2mortal, _pa_sv_2mortal_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_new_sv_nv_parms[] = {jit_tTHX_ jit_type_NV};
@@ -90,7 +90,7 @@ static jit_type_t _pa_new_sv_nv_sig = jit_type_create_signature(jit_abi_cdecl, j
 jit_value_t pa_new_sv_nv(jit_function_t function, jit_value_t nv)
 {
     jit_value_t _args[] = {jit_aTHX_ nv};
-    return jit_insn_call_native(function, "pa_new_sv_nv", (void *)_pa_new_sv_nv, _pa_new_sv_nv_sig, _args, SIZE(_args), 0);
+    return jit_insn_call_native(function, "pa_new_sv_nv", (void *)Perl_newSVnv, _pa_new_sv_nv_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_new_sv_iv_parms[] = {jit_tTHX_ jit_type_IV};
@@ -99,7 +99,7 @@ static jit_type_t _pa_new_sv_iv_sig = jit_type_create_signature(jit_abi_cdecl, j
 jit_value_t pa_new_sv_iv(jit_function_t function, jit_value_t iv)
 {
     jit_value_t _args[] = {jit_aTHX_ iv};
-    return jit_insn_call_native(function, "pa_new_sv_iv", (void *)_pa_new_sv_iv, _pa_new_sv_iv_sig, _args, SIZE(_args), 0);
+    return jit_insn_call_native(function, "pa_new_sv_iv", (void *)Perl_newSViv, _pa_new_sv_iv_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_new_sv_uv_parms[] = {jit_tTHX_ jit_type_UV};
@@ -108,16 +108,16 @@ static jit_type_t _pa_new_sv_uv_sig = jit_type_create_signature(jit_abi_cdecl, j
 jit_value_t pa_new_sv_uv(jit_function_t function, jit_value_t uv)
 {
     jit_value_t _args[] = {jit_aTHX_ uv};
-    return jit_insn_call_native(function, "pa_new_sv_uv", (void *)_pa_new_sv_uv, _pa_new_sv_uv_sig, _args, SIZE(_args), 0);
+    return jit_insn_call_native(function, "pa_new_sv_uv", (void *)Perl_newSVuv, _pa_new_sv_uv_sig, _args, SIZE(_args), 0);
 }
 
-static jit_type_t _pa_new_mortal_sv_parms[] = {jit_tTHX_ jit_type_UV};
+static jit_type_t _pa_new_mortal_sv_parms[] = {jit_tTHX};
 static jit_type_t _pa_new_mortal_sv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_new_mortal_sv_parms, SIZE(_pa_new_mortal_sv_parms), 1);
 
-jit_value_t pa_new_mortal_sv(jit_function_t function, jit_value_t uv)
+jit_value_t pa_new_mortal_sv(jit_function_t function)
 {
-    jit_value_t _args[] = {jit_aTHX_ uv};
-    return jit_insn_call_native(function, "pa_new_mortal_sv", (void *)_pa_new_mortal_sv, _pa_new_mortal_sv_sig, _args, SIZE(_args), 0);
+    jit_value_t _args[] = {jit_aTHX};
+    return jit_insn_call_native(function, "pa_new_mortal_sv", (void *)Perl_sv_newmortal, _pa_new_mortal_sv_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_get_targ_parms[] = {jit_tTHX};
@@ -144,7 +144,7 @@ static jit_type_t _pa_sv_set_iv_sig = jit_type_create_signature(jit_abi_cdecl, j
 jit_value_t pa_sv_set_iv(jit_function_t function, jit_value_t sv, jit_value_t iv)
 {
     jit_value_t _args[] = {jit_aTHX_ sv, iv};
-    return jit_insn_call_native(function, "pa_sv_set_iv", (void *)_pa_sv_set_iv, _pa_sv_set_iv_sig, _args, SIZE(_args), 0);
+    return jit_insn_call_native(function, "pa_sv_set_iv", (void *)Perl_sv_setiv, _pa_sv_set_iv_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_sv_set_nv_parms[] = {jit_tTHX_ jit_type_void_ptr, jit_type_NV};
@@ -153,7 +153,7 @@ static jit_type_t _pa_sv_set_nv_sig = jit_type_create_signature(jit_abi_cdecl, j
 jit_value_t pa_sv_set_nv(jit_function_t function, jit_value_t sv, jit_value_t nv)
 {
     jit_value_t _args[] = {jit_aTHX_ sv, nv};
-    return jit_insn_call_native(function, "pa_sv_set_nv", (void *)_pa_sv_set_nv, _pa_sv_set_nv_sig, _args, SIZE(_args), 0);
+    return jit_insn_call_native(function, "pa_sv_set_nv", (void *)Perl_sv_setnv, _pa_sv_set_nv_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_push_sv_parms[] = {jit_tTHX_ jit_type_void_ptr};

@@ -46,30 +46,11 @@ static jit_UV _pa_sv_uv(pTHX_ SV *sv)
     return SvUV(sv);
 }
 
-static SV *_pa_sv_2mortal(pTHX_ SV *sv)
-{
-    return sv_2mortal(sv);
-}
-
-static sv *_pa_new_sv_nv(pTHX_ jit_NV nv)
-{
-    return newSVnv(nv);
-}
-
-static SV *_pa_new_sv_iv(pTHX_ jit_IV iv)
-{
-    return newSViv(iv);
-}
-
-static SV *_pa_new_sv_uv(pTHX_ jit_UV uv)
-{
-    return newSVuv(uv);
-}
-
-static SV *_pa_new_mortal_sv(pTHX_ jit_UV uv)
-{
-    return sv_newmortal();
-}
+// SV *Perl_sv_2mortal(pTHX_ SV *sv) => pa_sv_2mortal
+// SV *Perl_newSVnv(pTHX_ jit_NV nv) => pa_new_sv_nv
+// SV *Perl_newSViv(pTHX_ jit_IV iv) => pa_new_sv_iv
+// SV *Perl_newSVuv(pTHX_ jit_UV uv) => pa_new_sv_uv
+// SV *Perl_sv_newmortal(pTHX) => pa_new_mortal_sv
 
 static SV *_pa_get_targ(pTHX)
 {
@@ -81,15 +62,8 @@ static jit_IV _pa_sv_true(pTHX_ SV *sv)
     return SvTRUE(sv);
 }
 
-static void _pa_sv_set_iv(pTHX_ SV *sv, jit_IV iv)
-{
-    sv_setiv(sv, iv);
-}
-
-static void _pa_sv_set_nv(pTHX_ SV *sv, jit_NV nv)
-{
-    sv_setnv(sv, nv);
-}
+// void Perl_sv_setiv(pTHX_ SV *sv, jit_IV iv) => pa_sv_set_iv
+// void Perl_sv_setnv(pTHX_ SV *sv, jit_NV nv) => pa_sv_set_nv
 
 static void _pa_push_sv(pTHX_ SV *sv)
 {
