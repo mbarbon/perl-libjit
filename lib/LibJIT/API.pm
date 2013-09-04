@@ -36,6 +36,7 @@ my @Functions = (qw(
     jit_value_create_NV_constant
     jit_value_create_UV_constant
     jit_value_create_IV_constant
+    jit_value_create_ptr_constant
     jit_value_create_undef_constant
 
     jit_dump_function

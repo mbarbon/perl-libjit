@@ -175,6 +175,16 @@ jit_value_create_UV_constant(jit_function_t func, const UV value)
 
 
 jit_value_t
+jit_value_create_ptr_constant(jit_function_t func, const IV value)
+{
+  jit_constant_t c;
+  c.type = jit_type_void_ptr;
+  c.un.ptr_value = INT2PTR(void *, value);
+  return jit_value_create_constant(func, &c);
+}
+
+
+jit_value_t
 jit_value_create_undef_constant(jit_function_t func)
 {
   jit_constant_t c;
