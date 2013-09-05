@@ -6,9 +6,35 @@
 
 #define LIBJIT_THX_TYPE 4242
 
-static SV *_pa_get_pad_sv(pTHX_ jit_nint padix)
+#ifdef USE_ITHREADS
+#define IOFF(name) PTR2IV(&((PerlInterpreter *)0)->I##name)
+
+inline jit_value_t get_ivar(jit_function_t function, jit_nint offset, jit_type_t type)
 {
-    return PAD_SVl(padix);
+    jit_value_t thx = jit_gTHX;
+
+    return jit_insn_load_relative(function, thx, offset, type);
+}
+
+#define IVAR(name, type) get_ivar(function, IOFF(name), type)
+#else
+inline jit_value_t get_ivar(jit_function_t function, void *address, jit_type_t type)
+{
+    jit_constant_t c;
+    c.type = jit_type_void_ptr;
+    c.un.ptr_value = address;
+    jit_value_t addr = jit_value_create_constant(function, &c);
+    return jit_insn_load_relative(function, addr, 0, type);
+}
+
+#define IVAR(name, type) get_ivar(function, &PL_##name, type)
+#endif
+
+jit_value_t pa_get_pad_sv(jit_function_t function, jit_value_t padix)
+{
+    jit_value_t curpad = IVAR(curpad, jit_type_void_ptr);
+
+    return jit_insn_load_elem(function, curpad, padix, jit_type_void_ptr);
 }
 
 static SV *_pa_gv_sv(pTHX_ GV *gv)
@@ -106,7 +132,7 @@ static jit_type_t pp_signature[] = { jit_type_void_ptr };
 static jit_type_t pp_signature[] = {};
 #endif
 
-jit_function_t pa_create_pp(jit_context_t context)
+jit_function_t pa_create_pp(jit_context_t context) /* no autogen wrapper */
 {
     jit_type_t signature = jit_type_create_signature(
         jit_abi_cdecl, jit_type_void_ptr, pp_signature, SIZE(pp_signature), 0);

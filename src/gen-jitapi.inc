@@ -3,15 +3,6 @@
 
 #define SIZE(a) (sizeof(a) / sizeof(a[0]))
 
-static jit_type_t _pa_get_pad_sv_parms[] = {jit_tTHX_ jit_type_nint};
-static jit_type_t _pa_get_pad_sv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_get_pad_sv_parms, SIZE(_pa_get_pad_sv_parms), 1);
-
-jit_value_t pa_get_pad_sv(jit_function_t function, jit_value_t padix)
-{
-    jit_value_t _args[] = {jit_aTHX_ padix};
-    return jit_insn_call_native(function, "pa_get_pad_sv", (void *)_pa_get_pad_sv, _pa_get_pad_sv_sig, _args, SIZE(_args), 0);
-}
-
 static jit_type_t _pa_gv_sv_parms[] = {jit_tTHX_ jit_type_void_ptr};
 static jit_type_t _pa_gv_sv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_gv_sv_parms, SIZE(_pa_gv_sv_parms), 1);
 
