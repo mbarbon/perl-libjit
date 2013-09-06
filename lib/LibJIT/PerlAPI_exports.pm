@@ -21,6 +21,7 @@ our @AutoFunctions = qw(
     pa_sv_true
     pa_sv_set_iv
     pa_sv_set_nv
+    pa_sv_set_sv_nosteal
     pa_push_sv
     pa_call_runloop
     pa_pop_sv

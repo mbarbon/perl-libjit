@@ -91,6 +91,11 @@ static jit_IV _pa_sv_true(pTHX_ SV *sv)
 // void Perl_sv_setiv(pTHX_ SV *sv, jit_IV iv) => pa_sv_set_iv
 // void Perl_sv_setnv(pTHX_ SV *sv, jit_NV nv) => pa_sv_set_nv
 
+static void _pa_sv_set_sv_nosteal(pTHX_ SV *dsv, SV *ssv)
+{
+    SvSetSV_nosteal(dsv, ssv);
+}
+
 static void _pa_push_sv(pTHX_ SV *sv)
 {
     dSP;

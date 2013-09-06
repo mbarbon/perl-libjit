@@ -36,6 +36,7 @@ jit_value_t pa_get_targ(jit_function_t function);
 jit_value_t pa_sv_true(jit_function_t function, jit_value_t sv);
 jit_value_t pa_sv_set_iv(jit_function_t function, jit_value_t sv, jit_value_t iv);
 jit_value_t pa_sv_set_nv(jit_function_t function, jit_value_t sv, jit_value_t nv);
+jit_value_t pa_sv_set_sv_nosteal(jit_function_t function, jit_value_t dsv, jit_value_t ssv);
 jit_value_t pa_push_sv(jit_function_t function, jit_value_t sv);
 jit_value_t pa_call_runloop(jit_function_t function, jit_value_t op);
 jit_value_t pa_pop_sv(jit_function_t function);

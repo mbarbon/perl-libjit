@@ -25,6 +25,7 @@ LibJIT::Value pa_get_targ(LibJIT::Function function);
 LibJIT::Value pa_sv_true(LibJIT::Function function, LibJIT::Value sv);
 LibJIT::Value pa_sv_set_iv(LibJIT::Function function, LibJIT::Value sv, LibJIT::Value iv);
 LibJIT::Value pa_sv_set_nv(LibJIT::Function function, LibJIT::Value sv, LibJIT::Value nv);
+LibJIT::Value pa_sv_set_sv_nosteal(LibJIT::Function function, LibJIT::Value dsv, LibJIT::Value ssv);
 LibJIT::Value pa_push_sv(LibJIT::Function function, LibJIT::Value sv);
 LibJIT::Value pa_call_runloop(LibJIT::Function function, LibJIT::Value op);
 LibJIT::Value pa_pop_sv(LibJIT::Function function);

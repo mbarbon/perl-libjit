@@ -147,6 +147,15 @@ jit_value_t pa_sv_set_nv(jit_function_t function, jit_value_t sv, jit_value_t nv
     return jit_insn_call_native(function, "pa_sv_set_nv", (void *)Perl_sv_setnv, _pa_sv_set_nv_sig, _args, SIZE(_args), 0);
 }
 
+static jit_type_t _pa_sv_set_sv_nosteal_parms[] = {jit_tTHX_ jit_type_void_ptr, jit_type_void_ptr};
+static jit_type_t _pa_sv_set_sv_nosteal_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_sv_set_sv_nosteal_parms, SIZE(_pa_sv_set_sv_nosteal_parms), 1);
+
+jit_value_t pa_sv_set_sv_nosteal(jit_function_t function, jit_value_t dsv, jit_value_t ssv)
+{
+    jit_value_t _args[] = {jit_aTHX_ dsv, ssv};
+    return jit_insn_call_native(function, "pa_sv_set_sv_nosteal", (void *)_pa_sv_set_sv_nosteal, _pa_sv_set_sv_nosteal_sig, _args, SIZE(_args), 0);
+}
+
 static jit_type_t _pa_push_sv_parms[] = {jit_tTHX_ jit_type_void_ptr};
 static jit_type_t _pa_push_sv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_push_sv_parms, SIZE(_pa_push_sv_parms), 1);
 
