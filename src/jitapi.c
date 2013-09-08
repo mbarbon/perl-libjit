@@ -37,6 +37,15 @@ jit_value_t pa_get_pad_sv(jit_function_t function, jit_value_t padix)
     return jit_insn_load_elem(function, curpad, padix, jit_type_void_ptr);
 }
 
+jit_value_t pa_get_pad_sv_address(jit_function_t function, jit_value_t padix)
+{
+    jit_value_t curpad = IVAR(curpad, jit_type_void_ptr);
+
+    return jit_insn_load_elem_address(function, curpad, padix, jit_type_void_ptr);
+}
+
+// void Perl_save_clearsv(pTHX_ SV **svp) => pa_save_clearsv
+
 static SV *_pa_gv_sv(pTHX_ GV *gv)
 {
     return GvSV(gv);
