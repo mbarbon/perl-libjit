@@ -29,6 +29,7 @@ our @AutoFunctions = qw(
     pa_pop_sv
     pa_get_op_next
     pa_trap
+    pa_pp_nextstate
 );
 
 1;

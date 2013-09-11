@@ -44,5 +44,6 @@ jit_value_t pa_call_runloop(jit_function_t function, jit_value_t op);
 jit_value_t pa_pop_sv(jit_function_t function);
 jit_value_t pa_get_op_next(jit_function_t function);
 jit_value_t pa_trap(jit_function_t function);
+jit_value_t pa_pp_nextstate(jit_function_t function);
 
 #endif // _GEN_LIBJIT_PERLAPI_H

@@ -33,3 +33,4 @@ LibJIT::Value pa_call_runloop(LibJIT::Function function, LibJIT::Value op);
 LibJIT::Value pa_pop_sv(LibJIT::Function function);
 LibJIT::Value pa_get_op_next(LibJIT::Function function);
 LibJIT::Value pa_trap(LibJIT::Function function);
+LibJIT::Value pa_pp_nextstate(LibJIT::Function function);

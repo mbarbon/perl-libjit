@@ -4,6 +4,10 @@
 #include "jitapi.h"
 #include "jit_perl_typemapping.h"
 
+/* From perl, not super-public, I suppose, but installed alongside the other
+ * perl headers. */
+#include <pp_proto.h>
+
 #define LIBJIT_THX_TYPE 4242
 
 #ifdef USE_ITHREADS
@@ -136,6 +140,11 @@ static OP *_pa_get_op_next(pTHX)
 static void _pa_trap(pTHX)
 {
     raise(SIGTRAP);
+}
+
+static void _pa_pp_nextstate(pTHX)
+{
+    (void)Perl_pp_nextstate(aTHX);
 }
 
 #include "gen-jitapi.inc"

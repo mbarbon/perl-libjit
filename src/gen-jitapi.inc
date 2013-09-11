@@ -210,3 +210,12 @@ jit_value_t pa_trap(jit_function_t function)
     return jit_insn_call_native(function, "pa_trap", (void *)_pa_trap, _pa_trap_sig, _args, SIZE(_args), 0);
 }
 
+static jit_type_t _pa_pp_nextstate_parms[] = {jit_tTHX};
+static jit_type_t _pa_pp_nextstate_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_pp_nextstate_parms, SIZE(_pa_pp_nextstate_parms), 1);
+
+jit_value_t pa_pp_nextstate(jit_function_t function)
+{
+    jit_value_t _args[] = {jit_aTHX};
+    return jit_insn_call_native(function, "pa_pp_nextstate", (void *)_pa_pp_nextstate, _pa_pp_nextstate_sig, _args, SIZE(_args), 0);
+}
+
