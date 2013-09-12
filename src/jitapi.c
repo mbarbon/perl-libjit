@@ -48,6 +48,7 @@ jit_value_t pa_get_pad_sv_address(jit_function_t function, jit_value_t padix)
     return jit_insn_load_elem_address(function, curpad, padix, jit_type_void_ptr);
 }
 
+
 // void Perl_save_clearsv(pTHX_ SV **svp) => pa_save_clearsv
 
 static SV *_pa_gv_sv(pTHX_ GV *gv)
@@ -142,11 +143,6 @@ static void _pa_trap(pTHX)
     raise(SIGTRAP);
 }
 
-static void _pa_pp_nextstate(pTHX)
-{
-    (void)Perl_pp_nextstate(aTHX);
-}
-
 #include "gen-jitapi.inc"
 
 #ifdef PERL_IMPLICIT_CONTEXT
@@ -167,3 +163,32 @@ jit_function_t pa_create_pp(jit_context_t context) /* no autogen wrapper */
 
     return pp;
 }
+
+static jit_type_t _pa_pp_nextstate_parms[] = {jit_tTHX};
+static jit_type_t _pa_pp_nextstate_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_pp_nextstate_parms, 1, 1);
+
+void pa_pp_nextstate(jit_function_t function, OP *nextstate_op) /* no autogen wrapper */
+{
+    // Get PL_op
+    jit_value_t pl_op = IVAR(op, jit_type_void_ptr);
+
+    // JIT constant that points at the nextstate OP that we already
+    // know about at JIT compile time
+    jit_constant_t c;
+    c.type = jit_type_void_ptr;
+    c.un.ptr_value = (void *)nextstate_op;
+    jit_value_t nextstate_op_addr = jit_value_create_constant(function, &c);
+
+    // Remember old PL_op value
+    jit_value_t oldop = jit_insn_load_relative(function, pl_op, 0, jit_type_void_ptr);
+    // Overwrite it with nextstate OP
+    jit_insn_store_relative(function, pl_op, 0, nextstate_op_addr);
+
+    // Invoke
+    jit_value_t args[] = {jit_aTHX};
+    jit_insn_call_native(function, "pa_pp_nextstate", (void *)Perl_pp_nextstate, _pa_pp_nextstate_sig, args, 1, 0);
+
+    // Reset
+    jit_insn_store_relative(function, pl_op, 0, oldop);
+}
+

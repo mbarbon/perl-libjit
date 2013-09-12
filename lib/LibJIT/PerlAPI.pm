@@ -12,6 +12,7 @@ our @AutoFunctions; # from API_exports
 
 my @Functions = (qw(
     pa_create_pp
+    pa_pp_nextstate
 ), @AutoFunctions);
 
 our @EXPORT_OK = (@Functions);
