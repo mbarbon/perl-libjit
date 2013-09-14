@@ -20,7 +20,15 @@ inline jit_value_t get_ivar(jit_function_t function, jit_nint offset, jit_type_t
     return jit_insn_load_relative(function, thx, offset, type);
 }
 
+inline int set_ivar(jit_function_t function, jit_nint offset, jit_value_t value)
+{
+    jit_value_t thx = jit_gTHX;
+
+    return jit_insn_store_relative(function, thx, offset, value);
+}
+
 #define IVAR(name, type) get_ivar(function, IOFF(name), type)
+#define IVAR_set(name, value) set_ivar(function, IOFF(name), value)
 #else
 inline jit_value_t get_ivar(jit_function_t function, void *address, jit_type_t type)
 {
@@ -31,7 +39,17 @@ inline jit_value_t get_ivar(jit_function_t function, void *address, jit_type_t t
     return jit_insn_load_relative(function, addr, 0, type);
 }
 
+inline int set_ivar(jit_function_t function, void *address, jit_value_t value)
+{
+    jit_constant_t c;
+    c.type = jit_type_void_ptr;
+    c.un.ptr_value = address;
+    jit_value_t addr = jit_value_create_constant(function, &c);
+    return jit_insn_store_relative(function, addr, 0, value);
+}
+
 #define IVAR(name, type) get_ivar(function, &PL_##name, type)
+#define IVAR_set(name, value) set_ivar(function, &PL_##name, value)
 #endif
 
 jit_value_t pa_get_pad_sv(jit_function_t function, jit_value_t padix)
