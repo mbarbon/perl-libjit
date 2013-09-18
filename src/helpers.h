@@ -48,7 +48,7 @@ std::vector<T> lj_convert_avref_to_object_array(pTHX_ SV *sv)
 
     res.reserve(size);
 
-    for (int i = 0; i < size; ++i)
+    for (int i = 0; i < (int)size; ++i)
     {
         void *obj = lj_convert_sv_to_object(aTHX_ *av_fetch(av, i, 0), "LibJIT::Type");
 
