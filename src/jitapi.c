@@ -10,6 +10,18 @@
 
 #define LIBJIT_THX_TYPE 4242
 
+inline jit_value_t make_u32(jit_function_t function, U32 value)
+{
+    return jit_value_create_nint_constant(function, jit_type_uint, value);
+}
+
+inline jit_value_t make_i32(jit_function_t function, U32 value)
+{
+    return jit_value_create_nint_constant(function, jit_type_int, value);
+}
+
+#define OFF(type, name) PTR2IV(&((type *)0)->name)
+
 #ifdef USE_ITHREADS
 #define IOFF(name) PTR2IV(&((PerlInterpreter *)0)->I##name)
 
@@ -87,6 +99,38 @@ static AV *_pa_gv_av(pTHX_ GV *gv)
 static HV *_pa_gv_hv(pTHX_ GV *gv)
 {
     return GvHV(gv);
+}
+
+jit_value_t pa_sv_any(jit_function_t function, jit_value_t sv)
+{
+    return jit_insn_load_relative(function, sv, OFF(SV, sv_any), jit_type_void_ptr);
+}
+
+jit_value_t pa_sv_flags(jit_function_t function, jit_value_t sv)
+{
+    return jit_insn_load_relative(function, sv, OFF(SV, sv_flags), jit_type_uint);
+}
+
+jit_value_t pa_sv_nvx(jit_function_t function, jit_value_t sv)
+{
+    jit_value_t any = pa_sv_any(function, sv);
+    return jit_insn_load_relative(function, any, OFF(XPVNV, xnv_u.xnv_nv), jit_type_NV);
+}
+
+// NV Perl_sv_2nv_flags(pTHX_ SV *sv, I32 flags) => pa_sv_2nv_flags
+
+jit_value_t pa_sv_2nv(jit_function_t function, jit_value_t sv)
+{
+    return pa_sv_2nv_flags(function, sv, make_i32(function, SV_GMAGIC));
+}
+
+jit_value_t pa_sv_nok_nog(jit_function_t function, jit_value_t sv)
+{
+    jit_value_t flags = pa_sv_flags(function, sv);
+
+    jit_value_t masked = jit_insn_and(function, flags, make_u32(function, SVf_NOK|SVs_GMG));
+
+    return jit_insn_eq(function, masked, make_u32(function, SVf_NOK));
 }
 
 static jit_NV _pa_sv_nv(pTHX_ SV *sv)

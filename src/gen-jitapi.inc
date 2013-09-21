@@ -48,6 +48,15 @@ jit_value_t pa_gv_hv(jit_function_t function, jit_value_t gv)
     return jit_insn_call_native(function, "pa_gv_hv", (void *)_pa_gv_hv, _pa_gv_hv_sig, _args, SIZE(_args), 0);
 }
 
+static jit_type_t _pa_sv_2nv_flags_parms[] = {jit_tTHX_ jit_type_void_ptr, jit_type_int};
+static jit_type_t _pa_sv_2nv_flags_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_NV, _pa_sv_2nv_flags_parms, SIZE(_pa_sv_2nv_flags_parms), 1);
+
+jit_value_t pa_sv_2nv_flags(jit_function_t function, jit_value_t sv, jit_value_t flags)
+{
+    jit_value_t _args[] = {jit_aTHX_ sv, flags};
+    return jit_insn_call_native(function, "pa_sv_2nv_flags", (void *)Perl_sv_2nv_flags, _pa_sv_2nv_flags_sig, _args, SIZE(_args), 0);
+}
+
 static jit_type_t _pa_sv_nv_parms[] = {jit_tTHX_ jit_type_void_ptr};
 static jit_type_t _pa_sv_nv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_NV, _pa_sv_nv_parms, SIZE(_pa_sv_nv_parms), 1);
 

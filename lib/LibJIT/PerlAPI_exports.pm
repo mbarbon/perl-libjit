@@ -11,6 +11,12 @@ our @AutoFunctions = qw(
     pa_gv_svn
     pa_gv_av
     pa_gv_hv
+    pa_sv_any
+    pa_sv_flags
+    pa_sv_nvx
+    pa_sv_2nv_flags
+    pa_sv_2nv
+    pa_sv_nok_nog
     pa_sv_nv
     pa_sv_iv
     pa_sv_uv
