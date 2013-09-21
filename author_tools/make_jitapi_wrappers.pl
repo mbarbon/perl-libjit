@@ -14,6 +14,12 @@ EOH
     exit 1;
 }
 
+my %typemap = qw(
+    void        jit_type_void
+    I32         jit_type_int
+    U32         jit_type_uint
+);
+
 sub jit_type {
     my ($text) = @_;
 
@@ -23,7 +29,7 @@ sub jit_type {
     return "jit_type_$1" if $text =~ /^(?:jit_)?([IUN]V)/;
     return 'jit_type_void_ptr' if $text =~ /\*/;
     return "jit_type_$1" if $text =~ /^jit_(\w+)$/;
-    return 'jit_type_void' if $text eq 'void';
+    return $typemap{$text} if exists $typemap{$text};
 
     die $text;
 }
