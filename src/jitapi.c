@@ -133,9 +133,23 @@ jit_value_t pa_sv_nok_nog(jit_function_t function, jit_value_t sv)
     return jit_insn_eq(function, masked, make_u32(function, SVf_NOK));
 }
 
-static jit_NV _pa_sv_nv(pTHX_ SV *sv)
+jit_value_t pa_sv_nv(jit_function_t function, jit_value_t sv)
 {
-    return SvNV(sv);
+    jit_label_t is_nok = jit_label_undefined, end = jit_label_undefined;
+    jit_value_t nok_nog = pa_sv_nok_nog(function, sv);
+    jit_value_t result = jit_value_create(function, jit_type_NV);
+
+    jit_insn_branch_if(function, nok_nog, &is_nok);
+
+    jit_insn_store(function, result, pa_sv_2nv(function, sv));
+    jit_insn_branch(function, &end);
+
+    jit_insn_label(function, &is_nok);
+    jit_insn_store(function, result, pa_sv_nvx(function, sv));
+
+    jit_insn_label(function, &end);
+
+    return result;
 }
 
 static jit_IV _pa_sv_iv(pTHX_ SV *sv)
