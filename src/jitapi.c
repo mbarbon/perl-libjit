@@ -241,7 +241,7 @@ jit_function_t pa_create_pp(jit_context_t context) /* no autogen wrapper */
 }
 
 static jit_type_t _pa_pp_nextstate_parms[] = {jit_tTHX};
-static jit_type_t _pa_pp_nextstate_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_pp_nextstate_parms, 1, 1);
+static jit_type_t _pa_pp_nextstate_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_pp_nextstate_parms, SIZE(_pa_pp_nextstate_parms), 1);
 
 void pa_pp_nextstate(jit_function_t function, OP *nextstate_op) /* no autogen wrapper */
 {
@@ -259,7 +259,7 @@ void pa_pp_nextstate(jit_function_t function, OP *nextstate_op) /* no autogen wr
 
     // Invoke
     jit_value_t args[] = {jit_aTHX};
-    jit_insn_call_native(function, "pa_pp_nextstate", (void *)Perl_pp_nextstate, _pa_pp_nextstate_sig, args, 1, 0);
+    jit_insn_call_native(function, "pa_pp_nextstate", (void *)Perl_pp_nextstate, _pa_pp_nextstate_sig, args, SIZE(args), 0);
 
     // Reset
     IVAR_set(op, oldop);
