@@ -1,6 +1,6 @@
 /Build
 /Build.bat
-/Build.PL
+/dev_Build.PL
 /LibJIT*
 /META.*
 /MYMETA.*
