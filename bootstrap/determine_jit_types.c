@@ -4,7 +4,7 @@
 #include <perl.h>
 
 int
-main(int argc, char *argv)
+main(int argc, char **argv)
 {
 #define TEST_TYPE(Size, Jit_type, Ctype, Union_member)   \
     if (Size == (size_t)jit_type_get_size((Jit_type))) { \
