@@ -6,6 +6,8 @@ package LibJIT::PerlAPI;
 our @AutoFunctions = qw(
     pa_get_pad_sv
     pa_get_pad_sv_address
+    pa_sv_yes
+    pa_sv_no
     pa_save_clearsv
     pa_gv_sv
     pa_gv_svn

@@ -25,6 +25,13 @@ inline jit_value_t make_i32(jit_function_t function, U32 value)
 #ifdef USE_ITHREADS
 #define IOFF(name) PTR2IV(&((PerlInterpreter *)0)->I##name)
 
+inline jit_value_t get_ivar_address(jit_function_t function, jit_nint offset)
+{
+    jit_value_t thx = jit_gTHX;
+
+    return jit_insn_add_relative(function, thx, offset);
+}
+
 inline jit_value_t get_ivar(jit_function_t function, jit_nint offset, jit_type_t type)
 {
     jit_value_t thx = jit_gTHX;
@@ -40,8 +47,17 @@ inline int set_ivar(jit_function_t function, jit_nint offset, jit_value_t value)
 }
 
 #define IVAR(name, type) get_ivar(function, IOFF(name), type)
+#define IVAR_address(name) get_ivar_address(function, IOFF(name))
 #define IVAR_set(name, value) set_ivar(function, IOFF(name), value)
 #else
+inline jit_value_t get_ivar_address(jit_function_t function, void *address)
+{
+    jit_constant_t c;
+    c.type = jit_type_void_ptr;
+    c.un.ptr_value = address;
+    return jit_value_create_constant(function, &c);
+}
+
 inline jit_value_t get_ivar(jit_function_t function, void *address, jit_type_t type)
 {
     jit_constant_t c;
@@ -61,6 +77,7 @@ inline int set_ivar(jit_function_t function, void *address, jit_value_t value)
 }
 
 #define IVAR(name, type) get_ivar(function, &PL_##name, type)
+#define IVAR_address(name) get_ivar_address(function, &PL_##name)
 #define IVAR_set(name, value) set_ivar(function, &PL_##name, value)
 #endif
 
@@ -78,6 +95,15 @@ jit_value_t pa_get_pad_sv_address(jit_function_t function, jit_value_t padix)
     return jit_insn_load_elem_address(function, curpad, padix, jit_type_void_ptr);
 }
 
+jit_value_t pa_sv_yes(jit_function_t function)
+{
+    return IVAR_address(sv_yes);
+}
+
+jit_value_t pa_sv_no(jit_function_t function)
+{
+    return IVAR_address(sv_no);
+}
 
 // void Perl_save_clearsv(pTHX_ SV **svp) => pa_save_clearsv
 

@@ -10,6 +10,8 @@
 
 LibJIT::Value pa_get_pad_sv(LibJIT::Function function, LibJIT::Value padix);
 LibJIT::Value pa_get_pad_sv_address(LibJIT::Function function, LibJIT::Value padix);
+LibJIT::Value pa_sv_yes(LibJIT::Function function);
+LibJIT::Value pa_sv_no(LibJIT::Function function);
 LibJIT::Value pa_save_clearsv(LibJIT::Function function, LibJIT::Value svp);
 LibJIT::Value pa_gv_sv(LibJIT::Function function, LibJIT::Value gv);
 LibJIT::Value pa_gv_svn(LibJIT::Function function, LibJIT::Value gv);
