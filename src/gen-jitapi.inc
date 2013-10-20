@@ -12,6 +12,24 @@ jit_value_t pa_save_clearsv(jit_function_t function, jit_value_t svp)
     return jit_insn_call_native(function, "pa_save_clearsv", (void *)Perl_save_clearsv, _pa_save_clearsv_sig, _args, SIZE(_args), 0);
 }
 
+static jit_type_t _pa_pp_enterloop_parms[] = {jit_tTHX};
+static jit_type_t _pa_pp_enterloop_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_pp_enterloop_parms, SIZE(_pa_pp_enterloop_parms), 1);
+
+jit_value_t pa_pp_enterloop(jit_function_t function)
+{
+    jit_value_t _args[] = {jit_aTHX};
+    return jit_insn_call_native(function, "pa_pp_enterloop", (void *)_pa_pp_enterloop, _pa_pp_enterloop_sig, _args, SIZE(_args), 0);
+}
+
+static jit_type_t _pa_pp_leaveloop_parms[] = {jit_tTHX};
+static jit_type_t _pa_pp_leaveloop_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_pp_leaveloop_parms, SIZE(_pa_pp_leaveloop_parms), 1);
+
+jit_value_t pa_pp_leaveloop(jit_function_t function)
+{
+    jit_value_t _args[] = {jit_aTHX};
+    return jit_insn_call_native(function, "pa_pp_leaveloop", (void *)_pa_pp_leaveloop, _pa_pp_leaveloop_sig, _args, SIZE(_args), 0);
+}
+
 static jit_type_t _pa_gv_sv_parms[] = {jit_tTHX_ jit_type_void_ptr};
 static jit_type_t _pa_gv_sv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_gv_sv_parms, SIZE(_pa_gv_sv_parms), 1);
 

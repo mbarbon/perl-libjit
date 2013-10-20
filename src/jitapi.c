@@ -107,6 +107,18 @@ jit_value_t pa_sv_no(jit_function_t function)
 
 // void Perl_save_clearsv(pTHX_ SV **svp) => pa_save_clearsv
 
+static void _pa_pp_enterloop(pTHX)
+{
+    // enterloop only uses PL_op to return op_next, which we ignore
+    Perl_pp_enterloop(aTHX);
+}
+
+static void _pa_pp_leaveloop(pTHX)
+{
+    // leaveloop only uses PL_op to return op_next, which we ignore
+    Perl_pp_leaveloop(aTHX);
+}
+
 static SV *_pa_gv_sv(pTHX_ GV *gv)
 {
     return GvSV(gv);

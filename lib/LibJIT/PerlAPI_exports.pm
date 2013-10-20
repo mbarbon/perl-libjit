@@ -9,6 +9,8 @@ our @AutoFunctions = qw(
     pa_sv_yes
     pa_sv_no
     pa_save_clearsv
+    pa_pp_enterloop
+    pa_pp_leaveloop
     pa_gv_sv
     pa_gv_svn
     pa_gv_av

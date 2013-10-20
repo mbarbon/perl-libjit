@@ -24,6 +24,8 @@ jit_value_t pa_get_pad_sv_address(jit_function_t function, jit_value_t padix);
 jit_value_t pa_sv_yes(jit_function_t function);
 jit_value_t pa_sv_no(jit_function_t function);
 jit_value_t pa_save_clearsv(jit_function_t function, jit_value_t svp);
+jit_value_t pa_pp_enterloop(jit_function_t function);
+jit_value_t pa_pp_leaveloop(jit_function_t function);
 jit_value_t pa_gv_sv(jit_function_t function, jit_value_t gv);
 jit_value_t pa_gv_svn(jit_function_t function, jit_value_t gv);
 jit_value_t pa_gv_av(jit_function_t function, jit_value_t gv);
