@@ -59,7 +59,7 @@ $replacement->targ($add->targ);
 $replacement->next($add->next);
 
 # swap the new op in place
-B::Replace::replace_tree($inc->ROOT, $add, $replacement);
+B::Replace::replace_tree(\&inc, $add, $replacement);
 
 is(inc(2), 3);
 is(inc(3.2), 4.2);
