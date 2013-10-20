@@ -6,4 +6,4 @@
 #include "jitapi.h"
 
 LibJIT::Function pa_create_pp(LibJIT::Context context);
-void pa_pp_nextstate(LibJIT::Function function, OP *nextstate_op);
+void pa_pp_op(LibJIT::Function function, OP *op);

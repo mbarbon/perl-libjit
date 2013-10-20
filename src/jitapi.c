@@ -266,26 +266,26 @@ jit_function_t pa_create_pp(jit_context_t context) /* no autogen wrapper */
     return pp;
 }
 
-static jit_type_t _pa_pp_nextstate_parms[] = {jit_tTHX};
-static jit_type_t _pa_pp_nextstate_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_pp_nextstate_parms, SIZE(_pa_pp_nextstate_parms), 1);
+static jit_type_t _pa_pp_op_parms[] = {jit_tTHX};
+static jit_type_t _pa_pp_op_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_pp_op_parms, SIZE(_pa_pp_op_parms), 1);
 
-void pa_pp_nextstate(jit_function_t function, OP *nextstate_op) /* no autogen wrapper */
+void pa_pp_op(jit_function_t function, OP *op) /* no autogen wrapper */
 {
-    // JIT constant that points at the nextstate OP that we already
+    // JIT constant that points at the OP that we already
     // know about at JIT compile time
     jit_constant_t c;
     c.type = jit_type_void_ptr;
-    c.un.ptr_value = (void *)nextstate_op;
-    jit_value_t nextstate_op_addr = jit_value_create_constant(function, &c);
+    c.un.ptr_value = (void *)op;
+    jit_value_t op_addr = jit_value_create_constant(function, &c);
 
     // Remember old PL_op value
     jit_value_t oldop = IVAR(op, jit_type_void_ptr);
-    // Overwrite it with nextstate OP
-    IVAR_set(op, nextstate_op_addr);
+    // Overwrite it with OP
+    IVAR_set(op, op_addr);
 
     // Invoke
     jit_value_t args[] = {jit_aTHX};
-    jit_insn_call_native(function, "pa_pp_nextstate", (void *)Perl_pp_nextstate, _pa_pp_nextstate_sig, args, SIZE(args), 0);
+    jit_insn_call_native(function, "pa_pp_op", (void *)op->op_ppaddr, _pa_pp_op_sig, args, SIZE(args), 0);
 
     // Reset
     IVAR_set(op, oldop);
