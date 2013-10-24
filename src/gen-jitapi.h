@@ -29,6 +29,7 @@ jit_value_t pa_pp_leaveloop(jit_function_t function);
 jit_value_t pa_gv_sv(jit_function_t function, jit_value_t gv);
 jit_value_t pa_gv_svn(jit_function_t function, jit_value_t gv);
 jit_value_t pa_gv_av(jit_function_t function, jit_value_t gv);
+jit_value_t pa_gv_avn(jit_function_t function, jit_value_t gv);
 jit_value_t pa_gv_hv(jit_function_t function, jit_value_t gv);
 jit_value_t pa_sv_any(jit_function_t function, jit_value_t sv);
 jit_value_t pa_sv_flags(jit_function_t function, jit_value_t sv);

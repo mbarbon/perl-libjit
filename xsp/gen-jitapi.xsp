@@ -18,6 +18,7 @@ LibJIT::Value pa_pp_leaveloop(LibJIT::Function function);
 LibJIT::Value pa_gv_sv(LibJIT::Function function, LibJIT::Value gv);
 LibJIT::Value pa_gv_svn(LibJIT::Function function, LibJIT::Value gv);
 LibJIT::Value pa_gv_av(LibJIT::Function function, LibJIT::Value gv);
+LibJIT::Value pa_gv_avn(LibJIT::Function function, LibJIT::Value gv);
 LibJIT::Value pa_gv_hv(LibJIT::Function function, LibJIT::Value gv);
 LibJIT::Value pa_sv_any(LibJIT::Function function, LibJIT::Value sv);
 LibJIT::Value pa_sv_flags(LibJIT::Function function, LibJIT::Value sv);
