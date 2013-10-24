@@ -211,6 +211,24 @@ static SV *_pa_get_targ(pTHX)
     return PAD_SV(PL_op->op_targ);
 }
 
+static SV *_pa_av_fetch(pTHX_ AV *av, IV index)
+{
+    SV **svp;
+    svp = av_fetch(av, index, 0);
+    if (svp == NULL)
+      return &PL_sv_undef;
+    return *svp;
+}
+
+static SV *_pa_av_fetch_lvalue(pTHX_ AV *av, IV index)
+{
+    SV **svp;
+    svp = av_fetch(av, index, 1);
+    if (svp == NULL)
+      return &PL_sv_undef;
+    return *svp;
+}
+
 static jit_IV _pa_sv_true(pTHX_ SV *sv)
 {
     return SvTRUE(sv);

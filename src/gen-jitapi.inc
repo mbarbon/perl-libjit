@@ -147,6 +147,24 @@ jit_value_t pa_get_targ(jit_function_t function)
     return jit_insn_call_native(function, "pa_get_targ", (void *)_pa_get_targ, _pa_get_targ_sig, _args, SIZE(_args), 0);
 }
 
+static jit_type_t _pa_av_fetch_parms[] = {jit_tTHX_ jit_type_void_ptr, jit_type_IV};
+static jit_type_t _pa_av_fetch_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_av_fetch_parms, SIZE(_pa_av_fetch_parms), 1);
+
+jit_value_t pa_av_fetch(jit_function_t function, jit_value_t av, jit_value_t index)
+{
+    jit_value_t _args[] = {jit_aTHX_ av, index};
+    return jit_insn_call_native(function, "pa_av_fetch", (void *)_pa_av_fetch, _pa_av_fetch_sig, _args, SIZE(_args), 0);
+}
+
+static jit_type_t _pa_av_fetch_lvalue_parms[] = {jit_tTHX_ jit_type_void_ptr, jit_type_IV};
+static jit_type_t _pa_av_fetch_lvalue_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_av_fetch_lvalue_parms, SIZE(_pa_av_fetch_lvalue_parms), 1);
+
+jit_value_t pa_av_fetch_lvalue(jit_function_t function, jit_value_t av, jit_value_t index)
+{
+    jit_value_t _args[] = {jit_aTHX_ av, index};
+    return jit_insn_call_native(function, "pa_av_fetch_lvalue", (void *)_pa_av_fetch_lvalue, _pa_av_fetch_lvalue_sig, _args, SIZE(_args), 0);
+}
+
 static jit_type_t _pa_sv_true_parms[] = {jit_tTHX_ jit_type_void_ptr};
 static jit_type_t _pa_sv_true_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_IV, _pa_sv_true_parms, SIZE(_pa_sv_true_parms), 1);
 

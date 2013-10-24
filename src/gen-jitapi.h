@@ -45,6 +45,8 @@ jit_value_t pa_new_sv_iv(jit_function_t function, jit_value_t iv);
 jit_value_t pa_new_sv_uv(jit_function_t function, jit_value_t uv);
 jit_value_t pa_new_mortal_sv(jit_function_t function);
 jit_value_t pa_get_targ(jit_function_t function);
+jit_value_t pa_av_fetch(jit_function_t function, jit_value_t av, jit_value_t index);
+jit_value_t pa_av_fetch_lvalue(jit_function_t function, jit_value_t av, jit_value_t index);
 jit_value_t pa_sv_true(jit_function_t function, jit_value_t sv);
 jit_value_t pa_sv_set_iv(jit_function_t function, jit_value_t sv, jit_value_t iv);
 jit_value_t pa_sv_set_nv(jit_function_t function, jit_value_t sv, jit_value_t nv);

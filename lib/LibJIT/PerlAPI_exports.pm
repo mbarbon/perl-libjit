@@ -30,6 +30,8 @@ our @AutoFunctions = qw(
     pa_new_sv_uv
     pa_new_mortal_sv
     pa_get_targ
+    pa_av_fetch
+    pa_av_fetch_lvalue
     pa_sv_true
     pa_sv_set_iv
     pa_sv_set_nv
