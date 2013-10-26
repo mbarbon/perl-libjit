@@ -6,28 +6,28 @@
 static jit_type_t _pa_save_clearsv_parms[] = {jit_tTHX_ jit_type_void_ptr};
 static jit_type_t _pa_save_clearsv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_save_clearsv_parms, SIZE(_pa_save_clearsv_parms), 1);
 
-jit_value_t pa_save_clearsv(jit_function_t function, jit_value_t svp)
+void pa_save_clearsv(jit_function_t function, jit_value_t svp)
 {
     jit_value_t _args[] = {jit_aTHX_ svp};
-    return jit_insn_call_native(function, "pa_save_clearsv", (void *)Perl_save_clearsv, _pa_save_clearsv_sig, _args, SIZE(_args), 0);
+    jit_insn_call_native(function, "pa_save_clearsv", (void *)Perl_save_clearsv, _pa_save_clearsv_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_pp_enterloop_parms[] = {jit_tTHX};
 static jit_type_t _pa_pp_enterloop_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_pp_enterloop_parms, SIZE(_pa_pp_enterloop_parms), 1);
 
-jit_value_t pa_pp_enterloop(jit_function_t function)
+void pa_pp_enterloop(jit_function_t function)
 {
     jit_value_t _args[] = {jit_aTHX};
-    return jit_insn_call_native(function, "pa_pp_enterloop", (void *)_pa_pp_enterloop, _pa_pp_enterloop_sig, _args, SIZE(_args), 0);
+    jit_insn_call_native(function, "pa_pp_enterloop", (void *)_pa_pp_enterloop, _pa_pp_enterloop_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_pp_leaveloop_parms[] = {jit_tTHX};
 static jit_type_t _pa_pp_leaveloop_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_pp_leaveloop_parms, SIZE(_pa_pp_leaveloop_parms), 1);
 
-jit_value_t pa_pp_leaveloop(jit_function_t function)
+void pa_pp_leaveloop(jit_function_t function)
 {
     jit_value_t _args[] = {jit_aTHX};
-    return jit_insn_call_native(function, "pa_pp_leaveloop", (void *)_pa_pp_leaveloop, _pa_pp_leaveloop_sig, _args, SIZE(_args), 0);
+    jit_insn_call_native(function, "pa_pp_leaveloop", (void *)_pa_pp_leaveloop, _pa_pp_leaveloop_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_gv_sv_parms[] = {jit_tTHX_ jit_type_void_ptr};
@@ -186,46 +186,46 @@ jit_value_t pa_sv_true(jit_function_t function, jit_value_t sv)
 static jit_type_t _pa_sv_set_iv_parms[] = {jit_tTHX_ jit_type_void_ptr, jit_type_IV};
 static jit_type_t _pa_sv_set_iv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_sv_set_iv_parms, SIZE(_pa_sv_set_iv_parms), 1);
 
-jit_value_t pa_sv_set_iv(jit_function_t function, jit_value_t sv, jit_value_t iv)
+void pa_sv_set_iv(jit_function_t function, jit_value_t sv, jit_value_t iv)
 {
     jit_value_t _args[] = {jit_aTHX_ sv, iv};
-    return jit_insn_call_native(function, "pa_sv_set_iv", (void *)Perl_sv_setiv, _pa_sv_set_iv_sig, _args, SIZE(_args), 0);
+    jit_insn_call_native(function, "pa_sv_set_iv", (void *)Perl_sv_setiv, _pa_sv_set_iv_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_sv_set_nv_parms[] = {jit_tTHX_ jit_type_void_ptr, jit_type_NV};
 static jit_type_t _pa_sv_set_nv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_sv_set_nv_parms, SIZE(_pa_sv_set_nv_parms), 1);
 
-jit_value_t pa_sv_set_nv(jit_function_t function, jit_value_t sv, jit_value_t nv)
+void pa_sv_set_nv(jit_function_t function, jit_value_t sv, jit_value_t nv)
 {
     jit_value_t _args[] = {jit_aTHX_ sv, nv};
-    return jit_insn_call_native(function, "pa_sv_set_nv", (void *)Perl_sv_setnv, _pa_sv_set_nv_sig, _args, SIZE(_args), 0);
+    jit_insn_call_native(function, "pa_sv_set_nv", (void *)Perl_sv_setnv, _pa_sv_set_nv_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_sv_set_sv_nosteal_parms[] = {jit_tTHX_ jit_type_void_ptr, jit_type_void_ptr};
 static jit_type_t _pa_sv_set_sv_nosteal_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_sv_set_sv_nosteal_parms, SIZE(_pa_sv_set_sv_nosteal_parms), 1);
 
-jit_value_t pa_sv_set_sv_nosteal(jit_function_t function, jit_value_t dsv, jit_value_t ssv)
+void pa_sv_set_sv_nosteal(jit_function_t function, jit_value_t dsv, jit_value_t ssv)
 {
     jit_value_t _args[] = {jit_aTHX_ dsv, ssv};
-    return jit_insn_call_native(function, "pa_sv_set_sv_nosteal", (void *)_pa_sv_set_sv_nosteal, _pa_sv_set_sv_nosteal_sig, _args, SIZE(_args), 0);
+    jit_insn_call_native(function, "pa_sv_set_sv_nosteal", (void *)_pa_sv_set_sv_nosteal, _pa_sv_set_sv_nosteal_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_push_sv_parms[] = {jit_tTHX_ jit_type_void_ptr};
 static jit_type_t _pa_push_sv_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_push_sv_parms, SIZE(_pa_push_sv_parms), 1);
 
-jit_value_t pa_push_sv(jit_function_t function, jit_value_t sv)
+void pa_push_sv(jit_function_t function, jit_value_t sv)
 {
     jit_value_t _args[] = {jit_aTHX_ sv};
-    return jit_insn_call_native(function, "pa_push_sv", (void *)_pa_push_sv, _pa_push_sv_sig, _args, SIZE(_args), 0);
+    jit_insn_call_native(function, "pa_push_sv", (void *)_pa_push_sv, _pa_push_sv_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_call_runloop_parms[] = {jit_tTHX_ jit_type_void_ptr};
 static jit_type_t _pa_call_runloop_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_call_runloop_parms, SIZE(_pa_call_runloop_parms), 1);
 
-jit_value_t pa_call_runloop(jit_function_t function, jit_value_t op)
+void pa_call_runloop(jit_function_t function, jit_value_t op)
 {
     jit_value_t _args[] = {jit_aTHX_ op};
-    return jit_insn_call_native(function, "pa_call_runloop", (void *)_pa_call_runloop, _pa_call_runloop_sig, _args, SIZE(_args), 0);
+    jit_insn_call_native(function, "pa_call_runloop", (void *)_pa_call_runloop, _pa_call_runloop_sig, _args, SIZE(_args), 0);
 }
 
 static jit_type_t _pa_pop_sv_parms[] = {jit_tTHX};
@@ -249,9 +249,9 @@ jit_value_t pa_get_op_next(jit_function_t function)
 static jit_type_t _pa_trap_parms[] = {jit_tTHX};
 static jit_type_t _pa_trap_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _pa_trap_parms, SIZE(_pa_trap_parms), 1);
 
-jit_value_t pa_trap(jit_function_t function)
+void pa_trap(jit_function_t function)
 {
     jit_value_t _args[] = {jit_aTHX};
-    return jit_insn_call_native(function, "pa_trap", (void *)_pa_trap, _pa_trap_sig, _args, SIZE(_args), 0);
+    jit_insn_call_native(function, "pa_trap", (void *)_pa_trap, _pa_trap_sig, _args, SIZE(_args), 0);
 }
 

@@ -55,6 +55,7 @@ sub process_function {
     $func =~ s{^_}{};
 
     my $jit_ret_type = jit_type($ret);
+    my ($ret_type, $retst) = $ret =~ /^\s*void\s*$/ ? ('void', '') : ('jit_value_t', 'return ');
     my @jit_arg_types = map jit_type($_), @args;
     my @jit_arg_names = map arg_name($_), @args;
     my $jitparms = @jit_arg_names ? join(', ', '', map "jit_value_t $_", @jit_arg_names) : '';
@@ -65,16 +66,16 @@ sub process_function {
 static jit_type_t _${func}_parms[] = {jit_tTHX${jittypes}};
 static jit_type_t _${func}_sig = jit_type_create_signature(jit_abi_cdecl, $jit_ret_type, _${func}_parms, SIZE(_${func}_parms), 1);
 
-jit_value_t ${func}(jit_function_t function${jitparms})
+${ret_type} ${func}(jit_function_t function${jitparms})
 {
     jit_value_t _args[] = {jit_aTHX$jitargs};
-    return jit_insn_call_native(function, "$func", (void *)${api}, _${func}_sig, _args, SIZE(_args), 0);
+    ${retst}jit_insn_call_native(function, "$func", (void *)${api}, _${func}_sig, _args, SIZE(_args), 0);
 }
 
 EOT
 
     my $h = sprintf <<EOT;
-jit_value_t ${func}(jit_function_t function${jitparms});
+${ret_type} ${func}(jit_function_t function${jitparms});
 EOT
     (my $xsp = $h) =~ s{jit_(\w+)_t}{LibJIT::\u$1}g;
     my $pm = "    ${func}\n";
