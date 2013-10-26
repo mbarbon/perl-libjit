@@ -2,7 +2,6 @@
 #include <perl.h>
 
 #include "jitapi.h"
-#include "jit_perl_typemapping.h"
 
 /* From perl, not super-public, I suppose, but installed alongside the other
  * perl headers. */

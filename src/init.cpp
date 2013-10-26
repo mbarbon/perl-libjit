@@ -1,5 +1,5 @@
 #include "helpers.h"
-#include "jit_perl_typemapping.h"
+#include "jittypes.h"
 
 #define DEFINE_TYPE(name) \
     lj_define_type(aTHX_ jit_type_##name, "jit_type_" #name)
@@ -137,11 +137,7 @@ jit_value_t
 jit_value_create_NV_constant(jit_function_t func, const NV value)
 {
   jit_constant_t c;
-  c.type = jit_type_NV;
-  /* Need to use correct type here since conversion to a larger float may,
-   * I think, cause conversion & might be lossy? {citation required} */
-  /* See src/jit_perl_typemapping.h */
-  c.un.LJ_NV_CONST_UNION_MEMBER = (jit_NV)value;
+  make_NV_constant(c, value);
   return jit_value_create_constant(func, &c);
 }
 
@@ -150,12 +146,7 @@ jit_value_t
 jit_value_create_IV_constant(jit_function_t func, const IV value)
 {
   jit_constant_t c;
-  c.type = jit_type_IV;
-  /* If we just use the largest type here, then later, jit_value_create_constant
-   * will use the correct type and value. At least for ints, this must yield the
-   * correct number. */
-  /* See src/jit_perl_typemapping.h */
-  c.un.LJ_IV_CONST_UNION_MEMBER = (jit_IV)value; /* Macro, see src/jit_perl_typemapping.h */
+  make_IV_constant(c, value);
   return jit_value_create_constant(func, &c);
 }
 
@@ -164,12 +155,7 @@ jit_value_t
 jit_value_create_UV_constant(jit_function_t func, const UV value)
 {
   jit_constant_t c;
-  c.type = jit_type_UV;
-  /* If we just use the largest type here, then later, jit_value_create_constant
-   * will use the correct type and value. At least for ints, this must yield the
-   * correct number. */
-  /* See src/jit_perl_typemapping.h */
-  c.un.LJ_UV_CONST_UNION_MEMBER = (jit_UV)value; /* Macro, see src/jit_perl_typemapping.h */
+  make_UV_constant(c, value);
   return jit_value_create_constant(func, &c);
 }
 

@@ -37,6 +37,7 @@ sub ACTION_code {
 # Build bootstrap/determine_jit_types.c and run it to generate a
 # header file that defines libjit-perl basic type mappings.
 sub ACTION_detect_types {
+    return;
     my ($self) = @_;
 
     $self->log_info("Detecting mapping between libjit and Perl types...\n");
