@@ -11,7 +11,11 @@
 #define SIZE(a) (sizeof(a) / sizeof(a[0]))
 
 static jit_type_t _void__athx_parms[] = {jit_tTHX};
+static jit_type_t _void__athx_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _void__athx_parms, SIZE(_void__athx_parms), 1);
 static jit_type_t _voidptr__athx_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _void__athx_parms, SIZE(_void__athx_parms), 1);
+
+static jit_type_t _void__athx_i32_parms[] = {jit_tTHX_ jit_type_int};
+static jit_type_t _void__athx_i32_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void, _void__athx_i32_parms, SIZE(_void__athx_i32_parms), 1);
 
 inline jit_value_t make_u32(jit_function_t function, U32 value)
 {
@@ -120,6 +124,103 @@ static void _pa_pp_leaveloop(pTHX)
 {
     // leaveloop only uses PL_op to return op_next, which we ignore
     Perl_pp_leaveloop(aTHX);
+}
+
+#ifdef __WIN32__
+#error "Implement pa_async_check on Win32"
+#endif
+
+void pa_async_check(jit_function_t function)
+{
+    jit_label_t not_pending = jit_label_undefined;
+
+    jit_insn_branch_if_not(function, IVAR(sig_pending, jit_type_sys_int), &not_pending);
+
+    jit_value_t args[] = {jit_aTHX};
+    jit_insn_call_indirect(function, IVAR(signalhook, jit_type_void_ptr), _void__athx_sig, args, SIZE(args), 1);
+
+    jit_insn_label(function, &not_pending);
+}
+
+void pa_taint_not(jit_function_t function)
+{
+    IVAR_set(tainted, jit_value_create_nint_constant(function, jit_type_BOOL, FALSE));
+}
+
+void pa_freetmps(jit_function_t function)
+{
+    jit_label_t not_gt = jit_label_undefined;
+    jit_value_t tmps_ix = IVAR(tmps_ix, jit_type_int);
+    jit_value_t tmps_floor = IVAR(tmps_floor, jit_type_int);
+
+    jit_insn_branch_if_not(function, jit_insn_gt(function, tmps_ix, tmps_floor), &not_gt);
+
+    jit_value_t args[] = {jit_aTHX};
+    jit_insn_call_native(function, "free_tmps", (void *) &Perl_free_tmps, _void__athx_sig, args, SIZE(args), 1);
+
+    jit_insn_label(function, &not_gt);
+}
+
+void pa_leave_scope(jit_function_t function, jit_value_t old_save)
+{
+    jit_label_t not_gt = jit_label_undefined;
+    jit_value_t savestack_ix = IVAR(savestack_ix, jit_type_int);
+
+    jit_insn_branch_if_not(function, jit_insn_gt(function, savestack_ix, old_save), &not_gt);
+
+    jit_value_t args[] = {jit_aTHX_ old_save};
+    jit_insn_call_native(function, "leave_scope", (void *) &Perl_leave_scope, _void__athx_i32_sig, args, SIZE(args), 1);
+
+    jit_insn_label(function, &not_gt);
+}
+
+// PL_stack_sp = PL_stack_base + cxstack[cxstack_ix].blk_oldsp
+static void _restore_stack_sp(jit_function_t function)
+{
+    // cxstack[cxstack_ix]
+    jit_value_t curstackinfo = IVAR(curstackinfo, jit_type_void_ptr);
+    jit_value_t cxst = jit_insn_load_relative(function, curstackinfo, OFF(struct stackinfo, si_cxstack), jit_type_void_ptr);
+    jit_value_t cxst_ix = jit_insn_load_relative(function, curstackinfo, OFF(struct stackinfo, si_cxix), jit_type_int);
+    jit_value_t elt = jit_insn_load_elem_address(function, cxst, cxst_ix, jit_type_void_ptr);
+
+    // .blk_oldsp
+    jit_value_t oldsp = jit_insn_load_relative(function, elt, OFF(PERL_CONTEXT, blk_oldsp), jit_type_int);
+
+    // PL_stack_base + ...
+    jit_value_t stack_base = IVAR(stack_base, jit_type_void_ptr);
+    jit_value_t new_stack = jit_insn_load_elem_address(function, stack_base, oldsp, jit_type_void_ptr);
+
+    IVAR_set(stack_sp, new_stack);
+}
+
+void pa_pp_nextstate(jit_function_t function, OP *op) /* no autogen wrapper */
+{
+    jit_constant_t c;
+    c.type = jit_type_void_ptr;
+    c.un.ptr_value = (void *)op;
+    jit_value_t op_addr = jit_value_create_constant(function, &c);
+
+    IVAR_set(curcop, op_addr);
+    pa_taint_not(function);
+    _restore_stack_sp(function);
+    pa_freetmps(function);
+    pa_async_check(function);
+}
+
+void pa_pp_unstack(jit_function_t function, bool leave) /* no autogen wrapper */
+{
+    pa_async_check(function);
+    pa_taint_not(function);
+    _restore_stack_sp(function);
+    pa_freetmps(function);
+
+    if (leave) {
+        jit_value_t scopestack = IVAR(scopestack, jit_type_void_ptr);
+        jit_value_t scopestack_ix = IVAR(scopestack_ix, jit_type_int);
+        jit_value_t old_save = jit_insn_load_elem(function, scopestack, jit_insn_add_relative(function, scopestack_ix, -1), jit_type_int);
+
+        pa_leave_scope(function, old_save);
+    }
 }
 
 static SV *_pa_gv_sv(pTHX_ GV *gv)

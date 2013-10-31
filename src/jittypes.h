@@ -65,6 +65,7 @@ JIT_MAP(T_ULong, jit_ulong, jit_type_ulong, ulong_value);
 typedef JitCheck<NV, T_Float, T_Double, T_NDouble>::type JitTypemap_NV;
 typedef JitCheck<IV, T_Int, T_NInt, T_Long>::type JitTypemap_IV;
 typedef JitCheck<UV, T_UInt, T_NUInt, T_ULong>::type JitTypemap_UV;
+typedef JitCheck<bool, T_Byte, T_Int, T_NInt, T_Long>::type JitTypemap_BOOL;
 
 typedef JitTypemap_NV::type jit_NV;
 #define jit_type_NV JitTypemap_NV::jit_type()
@@ -77,5 +78,8 @@ typedef JitTypemap_IV::type jit_IV;
 typedef JitTypemap_UV::type jit_UV;
 #define jit_type_UV JitTypemap_UV::jit_type()
 #define make_UV_constant(c, value) JitTypemap_UV::make_constant(c, value)
+
+typedef JitTypemap_BOOL::type jit_BOOL;
+#define jit_type_BOOL JitTypemap_BOOL::jit_type()
 
 #endif // _LIBJIT_TYPES_H

@@ -11,6 +11,10 @@ our @AutoFunctions = qw(
     pa_save_clearsv
     pa_pp_enterloop
     pa_pp_leaveloop
+    pa_async_check
+    pa_taint_not
+    pa_freetmps
+    pa_leave_scope
     pa_gv_sv
     pa_gv_svn
     pa_gv_av

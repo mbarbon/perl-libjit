@@ -7,3 +7,5 @@
 
 LibJIT::Function pa_create_pp(LibJIT::Context context);
 void pa_pp_op(LibJIT::Function function, OP *op);
+void pa_pp_nextstate(LibJIT::Function function, OP *op);
+void pa_pp_unstack(LibJIT::Function function, bool leave);
