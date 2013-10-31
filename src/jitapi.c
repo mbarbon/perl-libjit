@@ -8,6 +8,10 @@
 #include <pp_proto.h>
 
 #define LIBJIT_THX_TYPE 4242
+#define SIZE(a) (sizeof(a) / sizeof(a[0]))
+
+static jit_type_t _void__athx_parms[] = {jit_tTHX};
+static jit_type_t _voidptr__athx_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _void__athx_parms, SIZE(_void__athx_parms), 1);
 
 inline jit_value_t make_u32(jit_function_t function, U32 value)
 {
@@ -281,17 +285,9 @@ static void _pa_trap(pTHX)
 
 #include "gen-jitapi.inc"
 
-#ifdef PERL_IMPLICIT_CONTEXT
-static jit_type_t pp_signature[] = { jit_type_void_ptr };
-#else
-static jit_type_t pp_signature[] = {};
-#endif
-
 jit_function_t pa_create_pp(jit_context_t context) /* no autogen wrapper */
 {
-    jit_type_t signature = jit_type_create_signature(
-        jit_abi_cdecl, jit_type_void_ptr, pp_signature, SIZE(pp_signature), 0);
-    jit_function_t pp = jit_function_create(context, signature);
+    jit_function_t pp = jit_function_create(context, _voidptr__athx_sig);
 #ifdef PERL_IMPLICIT_CONTEXT
     jit_value_t thx = jit_value_get_param(pp, 0);
     jit_function_set_meta(pp, LIBJIT_THX_TYPE, thx, 0, 1);
@@ -299,9 +295,6 @@ jit_function_t pa_create_pp(jit_context_t context) /* no autogen wrapper */
 
     return pp;
 }
-
-static jit_type_t _pa_pp_op_parms[] = {jit_tTHX};
-static jit_type_t _pa_pp_op_sig = jit_type_create_signature(jit_abi_cdecl, jit_type_void_ptr, _pa_pp_op_parms, SIZE(_pa_pp_op_parms), 1);
 
 void pa_pp_op(jit_function_t function, OP *op) /* no autogen wrapper */
 {
@@ -319,7 +312,7 @@ void pa_pp_op(jit_function_t function, OP *op) /* no autogen wrapper */
 
     // Invoke
     jit_value_t args[] = {jit_aTHX};
-    jit_insn_call_native(function, "pa_pp_op", (void *)op->op_ppaddr, _pa_pp_op_sig, args, SIZE(args), 0);
+    jit_insn_call_native(function, "pa_pp_op", (void *)op->op_ppaddr, _voidptr__athx_sig, args, SIZE(args), 0);
 
     // Reset
     IVAR_set(op, oldop);
